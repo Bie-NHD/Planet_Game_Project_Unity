@@ -1,14 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlanetCombiner : MonoBehaviour
 {
     private int _layerIndex;
     private PlanetInfo _info;
+    AudioManager audioManager;
+   
 
     private void Awake()
     {
         _info = GetComponent<PlanetInfo>();
-        _layerIndex = gameObject.layer;   
+        _layerIndex = gameObject.layer; 
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -33,8 +37,12 @@ public class PlanetCombiner : MonoBehaviour
                         }
                         else
                         {
-                           Vector3 middlePosition = (transform.position + collision.transform.position) / 2;
-                           GameObject  go = Instantiate(SpawnCombinedPlanet(_info.PlanetIndex), GameManager.instance.transform);
+                            audioManager.PlaySFX(audioManager.merge);
+
+                         
+                            Vector3 middlePosition = (transform.position + collision.transform.position) / 2;
+                           
+                            GameObject  go = Instantiate(SpawnCombinedPlanet(_info.PlanetIndex), GameManager.instance.transform);
                             go.transform.position = middlePosition;
                             ColliderInformer informer = go.GetComponent<ColliderInformer>();
                             if(informer != null)
@@ -55,4 +63,5 @@ public class PlanetCombiner : MonoBehaviour
         GameObject go = PlanetSelector.instance.Planets[index + 1];
         return go;
     }
+
 }

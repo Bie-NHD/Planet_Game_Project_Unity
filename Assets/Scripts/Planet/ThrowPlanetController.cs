@@ -17,6 +17,8 @@ public class ThrowPlanetController : MonoBehaviour
     private Rigidbody2D _rb;
     private CircleCollider2D _circleCollider;
 
+    AudioManager audioManager;
+
     public Bounds Bounds { get; private set; }
 
     private const float EXTRA_WIDTH = 0.1f;
@@ -29,6 +31,7 @@ public class ThrowPlanetController : MonoBehaviour
         {
             instance = this;
         }
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
 
@@ -45,7 +48,7 @@ public class ThrowPlanetController : MonoBehaviour
     {
         if (UserInput.IsThrowPressed && CanThrow)
         {
-
+            audioManager.PlaySFX(audioManager.thow);
             SpriteIndex index = CurrentPlanet.GetComponent<SpriteIndex>();
             Quaternion rot = CurrentPlanet.transform.rotation;
             GameObject go = Instantiate(PlanetSelector.instance.Planets[index.Index], CurrentPlanet.transform.position, rot);

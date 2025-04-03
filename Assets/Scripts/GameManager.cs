@@ -63,10 +63,13 @@ public class GameManager : MonoBehaviour
 
         // Hiện nút restart sau khi GameOver xuất hiện
         _restartButton.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f); 
+        Time.timeScale = 0f;
     }
 
     public void RestartGame()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
