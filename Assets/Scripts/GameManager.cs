@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-   public static GameManager instance;
+    public static GameManager instance;
     public int currentScore { get; set; }
 
     [SerializeField] private TextMeshProUGUI _scoreText;
@@ -22,12 +22,12 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += FadeGame;
     }
     private void OnDisable()
-    {   
+    {
         SceneManager.sceneLoaded -= FadeGame;
     }
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -71,11 +71,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void FadeGame(Scene scene, LoadSceneMode mode)
-        {
+    {
         StartCoroutine(FadeGameIn());
-         }
-        private IEnumerator FadeGameIn()
-          {
+    }
+    private IEnumerator FadeGameIn()
+    {
         _panelGameOn.gameObject.SetActive(true);
         Color startColor = _panelGameOn.color;
         startColor.a = 1f;
@@ -91,5 +91,10 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         _panelGameOn.gameObject.SetActive(false);
-         }
+    }
+
+    public void OpenMenu()
+    {
+
+    }
 }
