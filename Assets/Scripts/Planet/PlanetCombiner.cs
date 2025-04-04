@@ -5,21 +5,21 @@ public class PlanetCombiner : MonoBehaviour
     private int _layerIndex;
     private PlanetInfo _info;
     AudioManager audioManager;
-   
+
 
     private void Awake()
     {
         _info = GetComponent<PlanetInfo>();
-        _layerIndex = gameObject.layer; 
+        _layerIndex = gameObject.layer;
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == _layerIndex)
+        if (collision.gameObject.layer == gameObject.layer)
         {
             PlanetInfo info = collision.gameObject.GetComponent<PlanetInfo>();
-           if(info != null)
+            if (info != null)
             {
                 if (_info.PlanetIndex == info.PlanetIndex)
                 {
@@ -39,13 +39,25 @@ public class PlanetCombiner : MonoBehaviour
                         {
                             audioManager.PlaySFX(audioManager.merge);
 
-                         
+
                             Vector3 middlePosition = (transform.position + collision.transform.position) / 2;
-                           
-                            GameObject  go = Instantiate(SpawnCombinedPlanet(_info.PlanetIndex), GameManager.instance.transform);
+
+                            // Spawn the new planet in the middle of the two planets
+                            GameObject go = Instantiate(SpawnCombinedPlanet(_info.PlanetIndex), GameManager.instance.AnimalHolderLayer.transform);
                             go.transform.position = middlePosition;
+                            // (Duyen): Small bouncing effect
+                            Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
+                            if (rb != null)
+                            {
+                                rb.AddForce(Vector3.up * (4f / Mathf.Max(2, _info.PlanetIndex)), ForceMode2D.Impulse);
+                            }
+                            // (Duyen): Merge effect
+                            GameObject goEffect = Instantiate(GameManager.instance.mergeEffectPrefab, GameManager.instance.MergeEffectLayer.transform);
+                            goEffect.transform.position = middlePosition;
+
+
                             ColliderInformer informer = go.GetComponent<ColliderInformer>();
-                            if(informer != null)
+                            if (informer != null)
                             {
                                 informer.WasCombinedIn = true;
                             }
@@ -53,7 +65,7 @@ public class PlanetCombiner : MonoBehaviour
                             Destroy(gameObject);
                         }
                     }
-                
+
                 }
             }
         }

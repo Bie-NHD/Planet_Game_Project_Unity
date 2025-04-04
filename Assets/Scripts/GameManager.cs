@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,11 +14,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private Image _panelGameOver;
     [SerializeField] private Image _panelGameOn;
-    [SerializeField] private Button _restartButton;
     [SerializeField] private Button _menuButton;
     [SerializeField] private float _fadeTime = 2f;
 
-    public float TimeTillGameOver = 1.5f;
+    public GameObject mergeEffectPrefab;
+
+    public GameObject AnimalHolderLayer { get; private set; }
+
+    public GameObject MergeEffectLayer { get; private set; }
+
+    public float TimeTillGameOver = 0.5f;
 
     private void OnEnable()
     {
@@ -33,6 +40,9 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         _scoreText.text = currentScore.ToString("0");
+
+        AnimalHolderLayer = transform.GetChild(0).gameObject;
+        MergeEffectLayer = transform.GetChild(1).gameObject;
     }
     public void AddScore(int score)
     {
@@ -43,6 +53,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         StartCoroutine(ShowGameOverScreen());
+        GetComponentInChildren<PlayerInput>().enabled = false;
     }
 
     private IEnumerator ShowGameOverScreen()
@@ -63,10 +74,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Hiện nút restart sau khi GameOver xuất hiện
-        //
-        //TODO(Duyen): replace _restartButton with [Transform.getChild(1).gameObject] to get the button in the panel
-        //(Duyen) Since the restart button appears more than once across the game, we could refactor the button/game object to a prefab
-        _restartButton.gameObject.SetActive(true);
+        _panelGameOver.transform.GetChild(1).gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
         Time.timeScale = 0f;
     }
@@ -84,6 +92,9 @@ public class GameManager : MonoBehaviour
     private IEnumerator FadeGameIn()
     {
         _panelGameOn.gameObject.SetActive(true);
+
+        // StartCoroutine(StartGameTextAnimation());
+
         Color startColor = _panelGameOn.color;
         startColor.a = 1f;
         _panelGameOn.color = startColor;
