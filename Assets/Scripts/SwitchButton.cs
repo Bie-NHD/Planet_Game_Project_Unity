@@ -7,6 +7,9 @@ public class SwitchButton : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _textMeshProUGUI;
     [SerializeField] Image _image;
+
+    [SerializeField] AudioSource audioSource;
+
     public string positiveText = "Positive";
     public string negativeText = "Negative";
 
@@ -28,6 +31,8 @@ public class SwitchButton : MonoBehaviour
             _textMeshProUGUI.text = negativeText;
             _image.sprite = negativeSprite;
         }
+
+        audioSource.enabled = isPositive;
     }
 
     void Awake()

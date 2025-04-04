@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject MergeEffectLayer { get; private set; }
 
+    public AudioManager AudioManager { get; private set; }
+
     public float TimeTillGameOver = 0.5f;
 
     private void OnEnable()
@@ -43,6 +45,7 @@ public class GameManager : MonoBehaviour
 
         AnimalHolderLayer = transform.GetChild(0).gameObject;
         MergeEffectLayer = transform.GetChild(1).gameObject;
+        AudioManager = GetComponentInChildren<AudioManager>();
     }
     public void AddScore(int score)
     {
