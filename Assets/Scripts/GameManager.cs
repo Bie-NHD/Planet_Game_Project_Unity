@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image _panelGameOver;
     [SerializeField] private Image _panelGameOn;
     [SerializeField] private Button _restartButton;
+    [SerializeField] private Button _menuButton;
     [SerializeField] private float _fadeTime = 2f;
 
     public float TimeTillGameOver = 1.5f;
@@ -62,8 +63,11 @@ public class GameManager : MonoBehaviour
         }
 
         // Hiện nút restart sau khi GameOver xuất hiện
+        //
+        //TODO(Duyen): replace _restartButton with [Transform.getChild(1).gameObject] to get the button in the panel
+        //(Duyen) Since the restart button appears more than once across the game, we could refactor the button/game object to a prefab
         _restartButton.gameObject.SetActive(true);
-        yield return new WaitForSecondsRealtime(0.5f); 
+        yield return new WaitForSecondsRealtime(0.5f);
         Time.timeScale = 0f;
     }
 
