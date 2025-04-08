@@ -1352,6 +1352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textMeshProUGUI: {fileID: 2074224016}
   _image: {fileID: 0}
+  audioSource: {fileID: 1000246543}
   positiveText: Music ON
   negativeText: Music OFF
   positiveSprite: {fileID: 3945531977668965137, guid: ec213d8865384064ba759d7853b43fe4, type: 3}
@@ -3115,6 +3116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textMeshProUGUI: {fileID: 638638536}
   _image: {fileID: 0}
+  audioSource: {fileID: 1754726908}
   positiveText: Sound ON
   negativeText: Sound OFF
   positiveSprite: {fileID: -5827515914222881311, guid: cf000c52df48929418b6ec61160acfa6, type: 3}
