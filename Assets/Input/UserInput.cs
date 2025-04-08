@@ -7,6 +7,7 @@ public class UserInput : MonoBehaviour
     public static Vector2 MoveInput { get; set; }
     public static bool IsThrowPressed { get; set; }
     public static bool IsDragging { get; set; }
+    public static Vector2 TapPosition { get; set; }
 
     private InputAction _moveAction;
     private InputAction _throwAction;
@@ -14,6 +15,8 @@ public class UserInput : MonoBehaviour
     private float _dragThreshold = 2f; 
     private Vector2 _initialTouchPosition;
 
+    private float _touchStartTime;
+    private float _quickTapThreshold = 0.2f;
     void Awake()
     {
         PlayerInput = GetComponent<PlayerInput>();
@@ -29,7 +32,9 @@ public class UserInput : MonoBehaviour
         if (_throwAction.WasPressedThisFrame())
         {
             _touchStarted = true;
+            _touchStartTime = Time.time;
             _initialTouchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+            TapPosition = _initialTouchPosition;
             IsDragging = false;
         }
 
@@ -41,15 +46,27 @@ public class UserInput : MonoBehaviour
             if (Vector2.Distance(_initialTouchPosition, currentPosition) > _dragThreshold)
             {
                 IsDragging = true;
+                TapPosition = currentPosition;
             }
         }
 
         // Kiểm tra khi thả tay
         if (_touchStarted && !Touchscreen.current.primaryTouch.press.isPressed)
         {
+            float touchDuration = Time.time - _touchStartTime;
             _touchStarted = false;
-            // Chỉ kích hoạt throw khi đã kéo trước đó
-            IsThrowPressed = IsDragging;
+
+            // Dù là kéo hay nhấn thả tại chỗ, đều kích hoạt throw
+            if (IsDragging || touchDuration < _quickTapThreshold)
+            {
+                IsThrowPressed = true;
+                // Giữ lại vị trí thả trong TapPosition
+            }
+            else
+            {
+                IsThrowPressed = false;
+            }
+
             IsDragging = false;
         }
         else
