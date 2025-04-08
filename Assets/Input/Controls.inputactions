@@ -51,7 +51,7 @@
                     "name": "",
                     "id": "ccf8cd69-2d38-489d-9def-dea1e0aebea1",
                     "path": "<Touchscreen>/Press",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "Throw",
