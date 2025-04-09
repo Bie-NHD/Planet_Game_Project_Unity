@@ -40,7 +40,7 @@ public class PlanetCombiner : MonoBehaviour
                             audioManager.PlaySFX(audioManager.merge);
 
 
-                            Vector3 middlePosition = (transform.position + collision.transform.position) / 2;
+                            Vector3 middlePosition = (transform.position + collision.transform.position) / 2;   
 
                             // Spawn the new planet in the middle of the two planets
                             GameObject go = Instantiate(SpawnCombinedPlanet(_info.PlanetIndex), GameManager.instance.AnimalHolderLayer.transform);

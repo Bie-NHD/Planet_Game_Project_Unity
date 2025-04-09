@@ -56,19 +56,27 @@ public class ThrowPlanetController : MonoBehaviour
         // Chỉ sử dụng tọa độ X từ vị trí tap, giữ nguyên Y từ vị trí spawn ban đầu
         spawnPosition.x = throwPosition.x;
 
-        GameObject go = Instantiate(
-            PlanetSelector.instance.Planets[index.Index],
-            spawnPosition, // Sử dụng vị trí spawn đã điều chỉnh
-            rot
-        );
+        //GameObject go = Instantiate(
+        //    PlanetSelector.instance.Planets[index.Index],
+        //    spawnPosition, // Sử dụng vị trí spawn đã điều chỉnh
+        //    rot
 
-        go.transform.SetParent(_parentAfterThrow);
-        Destroy(CurrentPlanet);
+        //go.transform.SetParent(_parentAfterThrow);
+        //Destroy(CurrentPlanet);
+
+        GameObject physicsPrefab = PlanetSelector.instance.Planets[index.Index];
+        GameObject physicsPlanet = PlanetObjectPool.Instance.GetPhysicsPlanet(physicsPrefab);
+        physicsPlanet.transform.SetPositionAndRotation(spawnPosition, rot);
+        physicsPlanet.transform.SetParent(_parentAfterThrow);
+        
+        GameObject noPhysicsPrefab = PlanetSelector.instance.NoPhysicsPlanets[index.Index];
+        PlanetObjectPool.Instance.ReturnNoPhysicsPlanet(noPhysicsPrefab, CurrentPlanet);
+        CurrentPlanet = null;
         CanThrow = false;
 
        
     }
-    private void Update()
+    private void Update()   
     {
         if (CurrentPlanet != null)
         {
@@ -81,21 +89,14 @@ public class ThrowPlanetController : MonoBehaviour
             pos.x = clampedX;
             CurrentPlanet.transform.position = pos;
         }
-        //if (UserInput.IsThrowPressed && CanThrow)
-        //{
-        //    audioManager.PlaySFX(audioManager.thow);
-        //    SpriteIndex index = CurrentPlanet.GetComponent<SpriteIndex>();
-        //    Quaternion rot = CurrentPlanet.transform.rotation;
-
-        //    GameObject go = Instantiate(PlanetSelector.instance.Planets[index.Index], CurrentPlanet.transform.position, rot);
-        //    go.transform.SetParent(_parentAfterThrow);
-        //    Destroy(CurrentPlanet);
-        //    CanThrow = false;
-        //}
+        
     }
     public void SpawnAPlanet(GameObject Planet)
     {
-        GameObject go = Instantiate(Planet, _planetTransform);
+        //GameObject go = Instantiate(Planet, _planetTransform);
+        GameObject go = PlanetObjectPool.Instance.GetNoPhysicsPlanet(Planet);
+        go.transform.SetParent(_planetTransform);
+        go.transform.localPosition = Vector3.zero;
         CurrentPlanet = go;
         _circleCollider = CurrentPlanet.GetComponent<CircleCollider2D>();
         Bounds = _circleCollider.bounds;

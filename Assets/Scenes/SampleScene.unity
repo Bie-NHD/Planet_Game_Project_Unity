@@ -620,6 +620,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _boundaries: {fileID: 542603533}
   _planetThrowTransform: {fileID: 882953910}
+  _useDirectPosition: 1
 --- !u!4 &252551120
 Transform:
   m_ObjectHideFlags: 0
@@ -5160,6 +5161,68 @@ Transform:
   - {fileID: 776919754}
   m_Father: {fileID: 1227972830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1590832134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1590832135}
+  - component: {fileID: 1590832136}
+  m_Layer: 0
+  m_Name: ObjectPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1590832135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590832134}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0094537735, y: 2.8486295, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1590832136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590832134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0e009916e5e86246bff678b7ace02e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planetPhysicsPools:
+  - prefab: {fileID: 6112064227757786329, guid: 88927c143cd20e24e857453567aaa1bb, type: 3}
+    size: 1
+  - prefab: {fileID: 5377108782461580798, guid: d3d7371e6def9c547a3fe744ef52f9fe, type: 3}
+    size: 2
+  - prefab: {fileID: 2075076176589254076, guid: 9cbf67bbaba083f418176dbf7e0e49e2, type: 3}
+    size: 3
+  - prefab: {fileID: 4218470222101831893, guid: c63757b8ff0d6084ca698ecedb2f3c1c, type: 3}
+    size: 4
+  planetNoPhysicsPools:
+  - prefab: {fileID: 1120622656238175971, guid: 88248bb4b3ec4314ba5aa52cf1923521, type: 3}
+    size: 1
+  - prefab: {fileID: 7115943874366062546, guid: ede9d13803ed9d74fbd293537fc91530, type: 3}
+    size: 2
+  - prefab: {fileID: 9049015805352313861, guid: 936018129e03c8b42bed1cdaf9ea6abe, type: 3}
+    size: 3
+  - prefab: {fileID: 1723211859019078240, guid: 4ea4a8eaf423b494bad74b5be5c83334, type: 3}
+    size: 4
 --- !u!1 &1603946896
 GameObject:
   m_ObjectHideFlags: 0
@@ -7447,3 +7510,4 @@ SceneRoots:
   - {fileID: 1651535962}
   - {fileID: 1651867401}
   - {fileID: 1755169568}
+  - {fileID: 1590832135}
