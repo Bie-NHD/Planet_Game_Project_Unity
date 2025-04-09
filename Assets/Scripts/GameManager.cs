@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
         MergeEffectLayer = transform.GetChild(1).gameObject;
         AudioManager = GetComponentInChildren<AudioManager>();
     }
+
+
     public void AddScore(int score)
     {
         currentScore += score;
@@ -60,11 +62,40 @@ public class GameManager : MonoBehaviour
         // Turn off user input
         GetComponentInChildren<PlayerInput>().enabled = false;
 
+        Time.timeScale = 0f;
+        StartCoroutine(PlayGameOverSound());
         StartCoroutine(ShowGameOverScreen());
+    }
+
+    private IEnumerator ShakeCamera()
+    {
+
+        Transform mainCameraTransform = Camera.main.transform;
+        Vector3 originalPosition = mainCameraTransform.localPosition;
+
+        for (int i = 0; i < 4; i++)
+        {
+            mainCameraTransform.localPosition = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, 0);
+            yield return null;
+        }
+        mainCameraTransform.localPosition = originalPosition;
+
+        yield return null;
+    }
+
+    private IEnumerator PlayGameOverSound()
+    {
+        AudioManager.ToggleMusic(false);
+        yield return new WaitForSecondsRealtime(0.5f);
+        AudioManager.PlaySFX(AudioManager.gameOver);
+        yield return new WaitForSecondsRealtime(4f); // GameOver sound duration
+        AudioManager.ToggleMusic(true);
     }
 
     private IEnumerator ShowGameOverScreen()
     {
+
+        // StartCoroutine(ShakeCamera());
         // Show gameOver screen
         _panelGameOver.gameObject.SetActive(true);
         // start-block: Fade-in effect for GameOver screen
@@ -72,6 +103,7 @@ public class GameManager : MonoBehaviour
         startColor.a = 0f;
         _panelGameOver.color = startColor;
         float elapsedTime = 0f;
+        Time.timeScale = 1f;
         while (elapsedTime < _fadeTime)
         {
             elapsedTime += Time.deltaTime;
@@ -84,7 +116,6 @@ public class GameManager : MonoBehaviour
         // Hiện nút restart sau khi GameOver xuất hiện
         _panelGameOver.transform.GetChild(1).gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
-        // TODO(Đạt): Explain this code
         Time.timeScale = 0f;
     }
 
