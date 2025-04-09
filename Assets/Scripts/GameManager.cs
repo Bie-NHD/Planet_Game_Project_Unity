@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     public AudioManager AudioManager { get; private set; }
 
-    public float TimeTillGameOver = 0.5f;
+    public float TimeTillGameOver = 0.5f; // Currrently set to 2.0f in the inspector
 
     private void OnEnable()
     {
@@ -55,17 +57,20 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        StartCoroutine(ShowGameOverScreen());
+        // Turn off user input
         GetComponentInChildren<PlayerInput>().enabled = false;
+
+        StartCoroutine(ShowGameOverScreen());
     }
 
     private IEnumerator ShowGameOverScreen()
     {
+        // Show gameOver screen
         _panelGameOver.gameObject.SetActive(true);
+        // start-block: Fade-in effect for GameOver screen
         Color startColor = _panelGameOver.color;
         startColor.a = 0f;
         _panelGameOver.color = startColor;
-
         float elapsedTime = 0f;
         while (elapsedTime < _fadeTime)
         {
@@ -75,10 +80,11 @@ public class GameManager : MonoBehaviour
             _panelGameOver.color = startColor;
             yield return null;
         }
-
+        // end-block: Fade-in effect for GameOver screen
         // Hiện nút restart sau khi GameOver xuất hiện
         _panelGameOver.transform.GetChild(1).gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
+        // TODO(Đạt): Explain this code
         Time.timeScale = 0f;
     }
 
