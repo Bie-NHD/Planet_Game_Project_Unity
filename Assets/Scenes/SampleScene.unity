@@ -958,6 +958,8 @@ MonoBehaviour:
   background: {fileID: 8300000, guid: 03e3125dff4702a4db2a92cdbc2994b0, type: 3}
   thow: {fileID: 8300000, guid: 4ad4188b1ea9c7245b3b8ee9e09ddca7, type: 3}
   merge: {fileID: 8300000, guid: 0f47d0b53578ce74fa8be8a6520e5f45, type: 3}
+  gameOver: {fileID: 8300000, guid: a13eb5038862187478e98edd54567c12, type: 3}
+  _playerPrefsManager: {fileID: 11400000, guid: f273a0b8730a42443bdf1f1d4cb037f4, type: 2}
 --- !u!4 &465696734
 Transform:
   m_ObjectHideFlags: 0
@@ -1332,7 +1334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textMeshProUGUI: {fileID: 2074224016}
   _image: {fileID: 0}
-  audioSource: {fileID: 1000246543}
+  audioType: 0
   positiveText: Music ON
   negativeText: Music OFF
   positiveSprite: {fileID: 3945531977668965137, guid: ec213d8865384064ba759d7853b43fe4, type: 3}
@@ -3096,7 +3098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textMeshProUGUI: {fileID: 638638536}
   _image: {fileID: 0}
-  audioSource: {fileID: 1754726908}
+  audioType: 1
   positiveText: Sound ON
   negativeText: Sound OFF
   positiveSprite: {fileID: -5827515914222881311, guid: cf000c52df48929418b6ec61160acfa6, type: 3}

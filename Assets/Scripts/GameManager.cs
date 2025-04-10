@@ -11,11 +11,20 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public int currentScore { get; set; }
 
-    [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private Image _panelGameOver;
-    [SerializeField] private Image _panelGameOn;
-    [SerializeField] private Button _menuButton;
-    [SerializeField] private float _fadeTime = 2f;
+    [SerializeField]
+    private TextMeshProUGUI _scoreText;
+
+    [SerializeField]
+    private Image _panelGameOver;
+
+    [SerializeField]
+    private Image _panelGameOn;
+
+    [SerializeField]
+    private Button _menuButton;
+
+    [SerializeField]
+    private float _fadeTime = 2f;
 
     public GameObject mergeEffectPrefab;
 
@@ -31,10 +40,12 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += FadeGame;
     }
+
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= FadeGame;
     }
+
     private void Awake()
     {
         if (instance == null)
@@ -47,6 +58,8 @@ public class GameManager : MonoBehaviour
         MergeEffectLayer = transform.GetChild(1).gameObject;
         AudioManager = GetComponentInChildren<AudioManager>();
     }
+
+
     public void AddScore(int score)
     {
         currentScore += score;
@@ -57,10 +70,45 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(ShowGameOverScreen());
         GetComponentInChildren<PlayerInput>().enabled = false;
+
+        Time.timeScale = 0f;
+        StartCoroutine(PlayGameOverSound());
+        StartCoroutine(ShowGameOverScreen());
+    }
+
+    private IEnumerator ShakeCamera()
+    {
+        Transform mainCameraTransform = Camera.main.transform;
+        Vector3 originalPosition = mainCameraTransform.localPosition;
+
+        for (int i = 0; i < 4; i++)
+        {
+            mainCameraTransform.localPosition = new Vector3(
+                UnityEngine.Random.Range(-1f, 1f),
+                0,
+                0
+            );
+            yield return null;
+        }
+        mainCameraTransform.localPosition = originalPosition;
+
+        yield return null;
+    }
+
+    private IEnumerator PlayGameOverSound()
+    {
+        AudioManager.ToggleMusic(false);
+        yield return new WaitForSecondsRealtime(0.5f);
+        AudioManager.PlaySFX(AudioManager.gameOver);
+        yield return new WaitForSecondsRealtime(4f); // GameOver sound duration
+        AudioManager.ToggleMusic(true);
     }
 
     private IEnumerator ShowGameOverScreen()
     {
+
+        // StartCoroutine(ShakeCamera());
+        // Show gameOver screen
         _panelGameOver.gameObject.SetActive(true);
         Color startColor = _panelGameOver.color;
         startColor.a = 0f;
@@ -92,6 +140,7 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(FadeGameIn());
     }
+
     private IEnumerator FadeGameIn()
     {
         _panelGameOn.gameObject.SetActive(true);
@@ -114,8 +163,5 @@ public class GameManager : MonoBehaviour
         _panelGameOn.gameObject.SetActive(false);
     }
 
-    public void OpenMenu()
-    {
-
-    }
+    public void OpenMenu() { }
 }
