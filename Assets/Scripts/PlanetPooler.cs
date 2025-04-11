@@ -170,6 +170,7 @@ public class PlanetPooler : MonoBehaviour
         GameObject gameObject = PlanetStacks[index].Pop();
 
         ToggleComponents(gameObject, true);
+        gameObject.GetComponent<PlanetCombiner>().enabled = false;
 
         return gameObject;
     }

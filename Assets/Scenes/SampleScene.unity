@@ -935,10 +935,9 @@ MonoBehaviour:
   _menuButton: {fileID: 0}
   _fadeTime: 2
   mergeEffectPrefab: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
-  AudioManager: {fileID: 0}
+  AudioManager: {fileID: 465696733}
   GameObjectIndex: {fileID: 0}
-  _planetPooler: {fileID: 0}
-  TimeTillGameOver: 0.8
+  _planetPooler: {fileID: 483333382}
 --- !u!114 &483333382
 MonoBehaviour:
   m_ObjectHideFlags: 0

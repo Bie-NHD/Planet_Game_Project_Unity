@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class GameOverCollider : MonoBehaviour
 {
-
     private bool m_isColliding = false;
 
     private float m_timer = 0f;
+
+    [Range(0.5f, 2f)]
+    [SerializeField]
+    private float TimeTillGameOver = 0.5f; //
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,13 +20,12 @@ public class GameOverCollider : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collision)
     {
-
         if (m_isColliding)
         {
             m_timer += Time.deltaTime;
         }
 
-        if (m_timer >= GameManager.instance.TimeTillGameOver)
+        if (m_timer >= TimeTillGameOver)
         {
             if (HasRigidBody2D(collision))
             {
@@ -32,8 +34,6 @@ public class GameOverCollider : MonoBehaviour
                 m_timer = 0f; // reset the timer
             }
         }
-
-
     }
 
     void OnTriggerExit2D(Collider2D other)
