@@ -1,126 +1,166 @@
-﻿using NUnit.Framework;
-using System;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PlanetObjectPool : MonoBehaviour
 {
-   public static PlanetObjectPool Instance;
-    [Serializable] public class PlanetPool
+    public static PlanetObjectPool Instance;
+
+    [System.Serializable]
+    public class PlanetPool
     {
-        public GameObject prefab;
+        public string tag;
+        public GameObject physicsPrefab;
+        public GameObject nonPhysicsPrefab;
         public int size;
     }
-    [Header("Pool cho planet sau khi ném (có Rigidbody)")]
-    public List<PlanetPool> planetPhysicsPools;
 
-    [Header("Pool cho planet chờ ném (không Rigidbody)")]
-    public List<PlanetPool> planetNoPhysicsPools;
+    [SerializeField] private List<PlanetPool> planetPools;
+    private Dictionary<string, Queue<GameObject>> physicsPool;
+    private Dictionary<string, Queue<GameObject>> nonPhysicsPool;
 
-    private Dictionary<GameObject, Stack<GameObject>> _physicsPool;
-    private Dictionary<GameObject, Stack<GameObject>> _noPhysicsPool;
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         InitializePools();
     }
+
     private void InitializePools()
     {
-        _physicsPool = new Dictionary<GameObject, Stack<GameObject>>();
-        _noPhysicsPool = new Dictionary<GameObject, Stack<GameObject>>();
+        physicsPool = new Dictionary<string, Queue<GameObject>>();
+        nonPhysicsPool = new Dictionary<string, Queue<GameObject>>();
 
-        // Khởi tạo pool cho physics
-        foreach (var pool in planetPhysicsPools)
+        foreach (PlanetPool planetPool in planetPools)
         {
-            var objectStack = new Stack<GameObject>();
-            for (int i = 0; i < pool.size; i++)
-            {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objectStack.Push(obj);
-            }
-            _physicsPool.Add(pool.prefab, objectStack);
-        }
+            Queue<GameObject> physicsObjects = new Queue<GameObject>();
+            Queue<GameObject> nonPhysicsObjects = new Queue<GameObject>();
 
-        // Khởi tạo pool cho no physics
-        foreach (var pool in planetNoPhysicsPools)
-        {
-            var objectStack = new Stack<GameObject>();
-            for (int i = 0; i < pool.size; i++)
+            for (int i = 0; i < planetPool.size; i++)
             {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objectStack.Push(obj);
-            }
-            _noPhysicsPool.Add(pool.prefab, objectStack);
-        }
-    }
-    public GameObject GetPhysicsPlanet(GameObject prefab)
-    {
-        return GetPlanetFromPool(_physicsPool, prefab);
-    }
-
-    public GameObject GetNoPhysicsPlanet(GameObject prefab)
-    {
-        return GetPlanetFromPool(_noPhysicsPool, prefab);
-    }
-
-    private GameObject GetPlanetFromPool(Dictionary<GameObject, Stack<GameObject>> poolDict, GameObject prefab)
-    {
-        if (poolDict.ContainsKey(prefab))
-        {
-            if (poolDict[prefab].Count == 0)
-            {
-                ExpandPool(poolDict, prefab);
+                CreateAndAddToPool(planetPool.physicsPrefab, planetPool.tag, true, physicsObjects);
+                CreateAndAddToPool(planetPool.nonPhysicsPrefab, planetPool.tag, false, nonPhysicsObjects);
             }
 
-            GameObject obj = poolDict[prefab].Pop();
-            obj.SetActive(true);
-            return obj;
+            physicsPool.Add(planetPool.tag, physicsObjects);
+            nonPhysicsPool.Add(planetPool.tag, nonPhysicsObjects);
         }
-
-        Debug.LogError($"Prefab {prefab.name} not found in pool dictionary!");
-        return null;
     }
 
-    public void ReturnPhysicsPlanet(GameObject prefab, GameObject obj)
+    private void CreateAndAddToPool(GameObject prefab, string tag, bool isPhysics, Queue<GameObject> queue)
     {
-        ReturnPlanetToPool(_physicsPool, prefab, obj);
-    }
-
-    public void ReturnNoPhysicsPlanet(GameObject prefab, GameObject obj)
-    {
-        ReturnPlanetToPool(_noPhysicsPool, prefab, obj);
-    }
-    private void ReturnPlanetToPool(Dictionary<GameObject, Stack<GameObject>> poolDict, GameObject prefab, GameObject obj)
-    {
+        GameObject obj = Instantiate(prefab);
+        obj.tag = tag;
         obj.SetActive(false);
-
-        if (poolDict.ContainsKey(prefab))
+        obj.transform.SetParent(transform);
+        
+        // Reset components
+        if (isPhysics)
         {
-            // Reset vật lý nếu cần
             var rb = obj.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
             }
-
-            poolDict[prefab].Push(obj);
         }
-        else
+        
+        var informer = obj.GetComponent<ColliderInformer>();
+        if (informer != null)
         {
-            Debug.LogError($"Prefab {prefab.name} not found in pool dictionary!");
+            informer.ResetCollisionState();
         }
-    }
-    private void ExpandPool(Dictionary<GameObject, Stack<GameObject>> poolDict, GameObject prefab)
-    {
-        GameObject newObj = Instantiate(prefab);
-        newObj.SetActive(false);
-        poolDict[prefab].Push(newObj);
+
+        queue.Enqueue(obj);
     }
 
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, bool isPhysics, Transform parent = null)
+    {
+        Dictionary<string, Queue<GameObject>> targetPool = isPhysics ? physicsPool : nonPhysicsPool;
+
+        if (!targetPool.ContainsKey(tag))
+        {
+            Debug.LogError($"Pool with tag {tag} not found (physics: {isPhysics})");
+            return null;
+        }
+
+        Queue<GameObject> queue = targetPool[tag];
+        if (queue.Count == 0)
+        {
+            // Attempt to expand pool
+            PlanetPool poolConfig = planetPools.Find(p => p.tag == tag);
+            if (poolConfig != null)
+            {
+                CreateAndAddToPool(isPhysics ? poolConfig.physicsPrefab : poolConfig.nonPhysicsPrefab, 
+                                 tag, isPhysics, queue);
+                Debug.LogWarning($"Expanding pool for tag {tag} (physics: {isPhysics})");
+            }
+            else
+            {
+                Debug.LogError($"Pool exhausted for tag {tag} (physics: {isPhysics})");
+                return null;
+            }
+        }
+
+        GameObject obj = queue.Dequeue();
+        ResetObject(obj, position, rotation, parent);
+        return obj;
+    }
+
+    private void ResetObject(GameObject obj, Vector3 position, Quaternion rotation, Transform parent)
+    {
+        obj.transform.SetParent(parent);
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        
+        var rb = obj.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        var informer = obj.GetComponent<ColliderInformer>();
+        if (informer != null)
+        {
+            informer.ResetCollisionState();
+        }
+
+        obj.SetActive(true);
+    }
+
+    public void ReturnToPool(GameObject obj)
+    {
+        if (obj == null) return;
+
+        string tag = obj.tag;
+        bool isPhysics = obj.GetComponent<Rigidbody2D>() != null;
+        Dictionary<string, Queue<GameObject>> targetPool = isPhysics ? physicsPool : nonPhysicsPool;
+
+        if (!targetPool.ContainsKey(tag))
+        {
+            Debug.LogError($"Cannot return object to pool: pool with tag {tag} not found");
+            return;
+        }
+
+        obj.SetActive(false);
+        obj.transform.SetParent(transform);
+        
+        var rb = obj.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        targetPool[tag].Enqueue(obj);
+    }
 }

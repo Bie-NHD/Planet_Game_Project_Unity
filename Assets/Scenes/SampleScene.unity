@@ -604,7 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _planetTransform: {fileID: 882953910}
   _parentAfterThrow: {fileID: 1002500690}
-  _selector: {fileID: 483333379}
+  _extraWidth: 0.05
 --- !u!114 &252551119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1005,29 +1005,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193ed864436256044a6361559fd46429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Planets:
-  - {fileID: 6112064227757786329, guid: 88927c143cd20e24e857453567aaa1bb, type: 3}
-  - {fileID: 5377108782461580798, guid: d3d7371e6def9c547a3fe744ef52f9fe, type: 3}
-  - {fileID: 2075076176589254076, guid: 9cbf67bbaba083f418176dbf7e0e49e2, type: 3}
-  - {fileID: 4218470222101831893, guid: c63757b8ff0d6084ca698ecedb2f3c1c, type: 3}
-  - {fileID: 7824173964277643695, guid: f11d1812709739f4c8bf77fafff7748f, type: 3}
-  - {fileID: 6296482198260379157, guid: 0edbac9ef62591042841728a658d162c, type: 3}
-  - {fileID: 7165095265061214398, guid: d7d33f0b2f0dda94582ffa64f97b9eb0, type: 3}
-  - {fileID: 5176630773067503862, guid: 5d25c8fbccb81d24db667842d6a518f8, type: 3}
-  - {fileID: 604034232851128373, guid: f90ad0d96a673834d86e124ddcbe3bc5, type: 3}
-  - {fileID: 7029672320966032352, guid: 6edb317ed5b46ca4eadb80982531bbba, type: 3}
-  NoPhysicsPlanets:
-  - {fileID: 1120622656238175971, guid: 88248bb4b3ec4314ba5aa52cf1923521, type: 3}
-  - {fileID: 7115943874366062546, guid: ede9d13803ed9d74fbd293537fc91530, type: 3}
-  - {fileID: 9049015805352313861, guid: 936018129e03c8b42bed1cdaf9ea6abe, type: 3}
-  - {fileID: 1723211859019078240, guid: 4ea4a8eaf423b494bad74b5be5c83334, type: 3}
-  - {fileID: 7472777842358029518, guid: 31073b7d970a11844980ada7d56f4249, type: 3}
-  - {fileID: 766442178506724, guid: f6eac1e70ae90464e81b26de71287b67, type: 3}
-  - {fileID: 6339544746847143544, guid: dc907d72b8c09bc46b429c6f1f6de619, type: 3}
-  - {fileID: 8423985340016060449, guid: 74665a7a42130de4c96c1b7bc037b9b4, type: 3}
-  - {fileID: 4312286966740417096, guid: 87fb699a853a8244a8ef455b8922c35f, type: 3}
-  - {fileID: 2101603222949625829, guid: baaacbc9609d9c14195e58fe12c75b0e, type: 3}
   HighestStartingIndex: 3
+  MaxMergeIndex: 11
   _nextPlanetImage: {fileID: 2074747261}
   _planetSprites:
   - {fileID: 7935234321397735378, guid: 92029cffb39b95943b5453ab643c37f3, type: 3}
@@ -5205,24 +5184,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e009916e5e86246bff678b7ace02e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planetPhysicsPools:
-  - prefab: {fileID: 6112064227757786329, guid: 88927c143cd20e24e857453567aaa1bb, type: 3}
-    size: 1
-  - prefab: {fileID: 5377108782461580798, guid: d3d7371e6def9c547a3fe744ef52f9fe, type: 3}
-    size: 2
-  - prefab: {fileID: 2075076176589254076, guid: 9cbf67bbaba083f418176dbf7e0e49e2, type: 3}
+  planetPools:
+  - tag: animal_0
+    physicsPrefab: {fileID: 6112064227757786329, guid: 88927c143cd20e24e857453567aaa1bb, type: 3}
+    nonPhysicsPrefab: {fileID: 1120622656238175971, guid: 88248bb4b3ec4314ba5aa52cf1923521, type: 3}
     size: 3
-  - prefab: {fileID: 4218470222101831893, guid: c63757b8ff0d6084ca698ecedb2f3c1c, type: 3}
-    size: 4
-  planetNoPhysicsPools:
-  - prefab: {fileID: 1120622656238175971, guid: 88248bb4b3ec4314ba5aa52cf1923521, type: 3}
-    size: 1
-  - prefab: {fileID: 7115943874366062546, guid: ede9d13803ed9d74fbd293537fc91530, type: 3}
-    size: 2
-  - prefab: {fileID: 9049015805352313861, guid: 936018129e03c8b42bed1cdaf9ea6abe, type: 3}
+  - tag: animal_1
+    physicsPrefab: {fileID: 5377108782461580798, guid: d3d7371e6def9c547a3fe744ef52f9fe, type: 3}
+    nonPhysicsPrefab: {fileID: 7115943874366062546, guid: ede9d13803ed9d74fbd293537fc91530, type: 3}
     size: 3
-  - prefab: {fileID: 1723211859019078240, guid: 4ea4a8eaf423b494bad74b5be5c83334, type: 3}
+  - tag: animal_2
+    physicsPrefab: {fileID: 2075076176589254076, guid: 9cbf67bbaba083f418176dbf7e0e49e2, type: 3}
+    nonPhysicsPrefab: {fileID: 9049015805352313861, guid: 936018129e03c8b42bed1cdaf9ea6abe, type: 3}
+    size: 3
+  - tag: animal_3
+    physicsPrefab: {fileID: 4218470222101831893, guid: c63757b8ff0d6084ca698ecedb2f3c1c, type: 3}
+    nonPhysicsPrefab: {fileID: 1723211859019078240, guid: 4ea4a8eaf423b494bad74b5be5c83334, type: 3}
     size: 4
+  - tag: animal_4
+    physicsPrefab: {fileID: 7824173964277643695, guid: f11d1812709739f4c8bf77fafff7748f, type: 3}
+    nonPhysicsPrefab: {fileID: 7472777842358029518, guid: 31073b7d970a11844980ada7d56f4249, type: 3}
+    size: 4
+  - tag: animal_5
+    physicsPrefab: {fileID: 6296482198260379157, guid: 0edbac9ef62591042841728a658d162c, type: 3}
+    nonPhysicsPrefab: {fileID: 766442178506724, guid: f6eac1e70ae90464e81b26de71287b67, type: 3}
+    size: 2
+  - tag: animal_6
+    physicsPrefab: {fileID: 7165095265061214398, guid: d7d33f0b2f0dda94582ffa64f97b9eb0, type: 3}
+    nonPhysicsPrefab: {fileID: 6339544746847143544, guid: dc907d72b8c09bc46b429c6f1f6de619, type: 3}
+    size: 1
+  - tag: animal_7
+    physicsPrefab: {fileID: 5176630773067503862, guid: 5d25c8fbccb81d24db667842d6a518f8, type: 3}
+    nonPhysicsPrefab: {fileID: 8423985340016060449, guid: 74665a7a42130de4c96c1b7bc037b9b4, type: 3}
+    size: 0
+  - tag: animal_8
+    physicsPrefab: {fileID: 604034232851128373, guid: f90ad0d96a673834d86e124ddcbe3bc5, type: 3}
+    nonPhysicsPrefab: {fileID: 4312286966740417096, guid: 87fb699a853a8244a8ef455b8922c35f, type: 3}
+    size: 0
+  - tag: animal_9
+    physicsPrefab: {fileID: 7029672320966032352, guid: 6edb317ed5b46ca4eadb80982531bbba, type: 3}
+    nonPhysicsPrefab: {fileID: 2101603222949625829, guid: baaacbc9609d9c14195e58fe12c75b0e, type: 3}
+    size: 0
+  - tag: animal_10
+    physicsPrefab: {fileID: 1000102963912157651, guid: 11481ec14cc610d4eb3edbe61eef40c0, type: 3}
+    nonPhysicsPrefab: {fileID: 900487219803183172, guid: 702ba84a325e95340857c32e27d44f2a, type: 3}
+    size: 0
 --- !u!1 &1603946896
 GameObject:
   m_ObjectHideFlags: 0

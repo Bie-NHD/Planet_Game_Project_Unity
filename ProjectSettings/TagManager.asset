@@ -5,6 +5,19 @@ TagManager:
   serializedVersion: 3
   tags:
   - Audio
+  - FxTemporaire
+  - Undefined
+  - animal_0
+  - animal_1
+  - animal_2
+  - animal_3
+  - animal_4
+  - animal_5
+  - animal_6
+  - animal_7
+  - animal_8
+  - animal_9
+  - animal_10
   layers:
   - Default
   - TransparentFX

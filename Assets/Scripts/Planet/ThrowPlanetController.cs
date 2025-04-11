@@ -3,25 +3,16 @@
 public class ThrowPlanetController : MonoBehaviour
 {
     public static ThrowPlanetController instance;
-
-    private ThrowPlanetController() { }
-
     public GameObject CurrentPlanet { get; set; }
 
     [SerializeField] private Transform _planetTransform;
-    [SerializeField] private Transform _parentAfterThrow;
-    [SerializeField] private PlanetSelector _selector;
+            [SerializeField] private Transform _parentAfterThrow;
+    [SerializeField] private float _extraWidth = 0.05f;
 
     private PlayerController _playerController;
-
-    private Rigidbody2D _rb;
     private CircleCollider2D _circleCollider;
-
-    AudioManager audioManager;
-
+    private AudioManager audioManager;
     public Bounds Bounds { get; private set; }
-
-    private const float EXTRA_WIDTH = 0.05f;
 
     public bool CanThrow { get; set; } = true;
 
@@ -31,77 +22,76 @@ public class ThrowPlanetController : MonoBehaviour
         {
             instance = this;
         }
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
     }
-
 
     void Start()
     {
-
         _playerController = GetComponent<PlayerController>();
         PlanetSelector.instance.PickNextPlanet();
-        SpawnAPlanet(PlanetSelector.instance.NextPlanet);
+        SpawnAPlanet(PlanetSelector.instance.NextPlanetTag);
         PlanetSelector.instance.PickNextPlanet();
     }
-    public void ThrowPlanetAtPosition(Vector3 throwPosition)
+    public void SpawnAPlanet(string planetTag)
+    {
+        GameObject planet = PlanetObjectPool.Instance.SpawnFromPool(
+            planetTag,
+            _planetTransform.position,
+            Quaternion.identity,
+            false,
+            _planetTransform
+        );
+
+        if (planet != null)
+        {
+            CurrentPlanet = planet;
+            _circleCollider = CurrentPlanet.GetComponent<CircleCollider2D>();
+            if (_circleCollider != null)
+            {
+                Bounds = _circleCollider.bounds;
+                _playerController.ChangeBoundary(_extraWidth);
+            }
+        }
+    }
+    public void ThrowPlanetAtPosition(Vector3 throwPosition)    
     {
         if (!CanThrow || CurrentPlanet == null) return;
-
+     
         audioManager.PlaySFX(audioManager.thow);
-        SpriteIndex index = CurrentPlanet.GetComponent<SpriteIndex>();
-        Quaternion rot = CurrentPlanet.transform.rotation;
-
+        
+        string currentTag = CurrentPlanet.tag;
         Vector3 spawnPosition = _planetTransform.position;
-
-        // Chỉ sử dụng tọa độ X từ vị trí tap, giữ nguyên Y từ vị trí spawn ban đầu
         spawnPosition.x = throwPosition.x;
 
-        //GameObject go = Instantiate(
-        //    PlanetSelector.instance.Planets[index.Index],
-        //    spawnPosition, // Sử dụng vị trí spawn đã điều chỉnh
-        //    rot
+        GameObject physicsPlanet = PlanetObjectPool.Instance.SpawnFromPool(
+            currentTag,
+            spawnPosition,
+            Quaternion.identity,
+            true,
+            _parentAfterThrow
+        );
 
-        //go.transform.SetParent(_parentAfterThrow);
-        //Destroy(CurrentPlanet);
+        if (physicsPlanet != null)
+        {
+            var rb = physicsPlanet.GetComponent<Rigidbody2D>();
+            
+        }
 
-        GameObject physicsPrefab = PlanetSelector.instance.Planets[index.Index];
-        GameObject physicsPlanet = PlanetObjectPool.Instance.GetPhysicsPlanet(physicsPrefab);
-        physicsPlanet.transform.SetPositionAndRotation(spawnPosition, rot);
-        physicsPlanet.transform.SetParent(_parentAfterThrow);
-        
-        GameObject noPhysicsPrefab = PlanetSelector.instance.NoPhysicsPlanets[index.Index];
-        PlanetObjectPool.Instance.ReturnNoPhysicsPlanet(noPhysicsPrefab, CurrentPlanet);
+        PlanetObjectPool.Instance.ReturnToPool(CurrentPlanet);
         CurrentPlanet = null;
         CanThrow = false;
-
-       
     }
-    private void Update()   
+
+    private void Update()
     {
         if (CurrentPlanet != null)
         {
             Vector3 pos = _planetTransform.position;
-
-            // Clamp theo left/right bounds
-            float halfPlanetSize = Bounds.size.x / 2;
             float clampedX = Mathf.Clamp(pos.x, _playerController.LeftBound, _playerController.RightBound);
-
             pos.x = clampedX;
             CurrentPlanet.transform.position = pos;
         }
-        
-    }
-    public void SpawnAPlanet(GameObject Planet)
-    {
-        //GameObject go = Instantiate(Planet, _planetTransform);
-        GameObject go = PlanetObjectPool.Instance.GetNoPhysicsPlanet(Planet);
-        go.transform.SetParent(_planetTransform);
-        go.transform.localPosition = Vector3.zero;
-        CurrentPlanet = go;
-        _circleCollider = CurrentPlanet.GetComponent<CircleCollider2D>();
-        Bounds = _circleCollider.bounds;
-
-        _playerController.ChangeBoundary(EXTRA_WIDTH);
     }
 
+    
 }

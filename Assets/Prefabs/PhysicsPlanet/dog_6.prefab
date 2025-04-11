@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 1723493156099546141}
   m_Layer: 8
   m_Name: dog_6
-  m_TagString: Untagged
+  m_TagString: animal_6
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,7 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aeb71f372f05e42bcc85776776782f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mergeEffect: {fileID: 7150318312164480853, guid: b34bb9893e3a5a8438ff9a24f93ff650, type: 3}
 --- !u!114 &-9083179183380993775
 MonoBehaviour:
   m_ObjectHideFlags: 0

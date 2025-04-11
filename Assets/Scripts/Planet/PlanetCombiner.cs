@@ -1,79 +1,120 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlanetCombiner : MonoBehaviour
 {
     private int _layerIndex;
     private PlanetInfo _info;
-    AudioManager audioManager;
+    private AudioManager audioManager;
 
-
-    private void Awake()
+    private void OnEnable()
     {
         _info = GetComponent<PlanetInfo>();
         _layerIndex = gameObject.layer;
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-
+    
+            audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
+        
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == gameObject.layer)
+        if (collision.gameObject.layer == _layerIndex)
         {
-            PlanetInfo info = collision.gameObject.GetComponent<PlanetInfo>();
-            if (info != null)
+            PlanetInfo otherInfo = collision.gameObject.GetComponent<PlanetInfo>();
+            if (otherInfo != null && _info != null && _info.PlanetIndex == otherInfo.PlanetIndex)
             {
-                if (_info.PlanetIndex == info.PlanetIndex)
+                int thisID = gameObject.GetInstanceID();
+                int otherID = collision.gameObject.GetInstanceID();
+
+                if (thisID > otherID)
                 {
-                    int thisID = gameObject.GetInstanceID();
-                    int otherID = collision.gameObject.GetInstanceID();
-
-                    if (thisID > otherID)
-                    {
-                        GameManager.instance.AddScore(_info.PointsWhenAnnihilated);
-                        if (_info.PlanetIndex == PlanetSelector.instance.Planets.Length - 1)
-                        {
-                            Destroy(collision.gameObject);
-                            Destroy(gameObject);
-
-                        }
-                        else
-                        {
-                            audioManager.PlaySFX(audioManager.merge);
-
-
-                            Vector3 middlePosition = (transform.position + collision.transform.position) / 2;   
-
-                            // Spawn the new planet in the middle of the two planets
-                            GameObject go = Instantiate(SpawnCombinedPlanet(_info.PlanetIndex), GameManager.instance.AnimalHolderLayer.transform);
-                            go.transform.position = middlePosition;
-                            // (Duyen): Small bouncing effect
-                            Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
-                            if (rb != null)
-                            {
-                                rb.AddForce(Vector3.up * (4f / Mathf.Max(2, _info.PlanetIndex)), ForceMode2D.Impulse);
-                            }
-                            // (Duyen): Merge effect
-                            GameObject goEffect = Instantiate(GameManager.instance.mergeEffectPrefab, GameManager.instance.MergeEffectLayer.transform);
-                            goEffect.transform.position = middlePosition;
-
-
-                            ColliderInformer informer = go.GetComponent<ColliderInformer>();
-                            if (informer != null)
-                            {
-                                informer.WasCombinedIn = true;
-                            }
-                            Destroy(collision.gameObject);
-                            Destroy(gameObject);
-                        }
-                    }
-
+                    HandlePlanetMerge(collision.gameObject, otherInfo);
                 }
             }
         }
     }
-    private GameObject SpawnCombinedPlanet(int index)
+
+    private void HandlePlanetMerge(GameObject otherPlanet, PlanetInfo otherInfo)
     {
-        GameObject go = PlanetSelector.instance.Planets[index + 1];
-        return go;
+        if (_info == null) return;
+        Debug.Log($"Starting merge of planets with index {_info.PlanetIndex}");
+
+        
+        GameManager.instance.AddScore(_info.PointsWhenAnnihilated);
+
+        
+        Vector3 middlePosition = (transform.position + otherPlanet.transform.position) / 2;
+        audioManager.PlaySFX(audioManager.merge);
+
+        if (GameManager.instance.mergeEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(GameManager.instance.mergeEffectPrefab, 
+                middlePosition, 
+                Quaternion.identity, 
+                GameManager.instance.MergeEffectLayer.transform);
+            Destroy(effect, 2f);
+        }
+
+        if (_info.PlanetIndex >= PlanetSelector.instance.MaxMergeIndex)
+        {
+            Debug.Log($"Reached maximum merge level ({PlanetSelector.instance.MaxMergeIndex}), destroying planets");
+           
+            PlanetObjectPool.Instance.ReturnToPool(otherPlanet);
+            PlanetObjectPool.Instance.ReturnToPool(gameObject);
+        }
+        else
+        {
+            Debug.Log($"Merging planets to create index {_info.PlanetIndex + 1}");
+           
+            SpawnMergedPlanet(middlePosition, _info.PlanetIndex + 1);
+
+         
+            PlanetObjectPool.Instance.ReturnToPool(otherPlanet);
+            PlanetObjectPool.Instance.ReturnToPool(gameObject);
+        }
     }
 
+    private void SpawnMergedPlanet(Vector3 position, int newIndex)
+    {
+        string newTag = $"animal_{newIndex}";
+         Debug.Log($"Attempting to spawn merged planet with tag {newTag}");
+        GameObject newPlanet = PlanetObjectPool.Instance.SpawnFromPool(
+            newTag,
+            position,
+            Quaternion.identity,
+            true,
+            GameManager.instance.AnimalHolderLayer.transform
+        );
+
+        if (newPlanet != null)
+        {
+        
+            newPlanet.SetActive(true);
+
+            var rb = newPlanet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.AddForce(Vector3.up * (4f / Mathf.Max(2, _info.PlanetIndex)), ForceMode2D.Impulse);
+            }
+
+            var informer = newPlanet.GetComponent<ColliderInformer>();
+            if (informer != null)
+            {
+                informer.ResetCollisionState(); 
+                informer.WasCombinedIn = true;
+            }
+
+          
+            var planetInfo = newPlanet.GetComponent<PlanetInfo>();
+            if (planetInfo != null)
+            {
+                planetInfo.PlanetIndex = newIndex;
+            }
+        }
+        else
+        {
+            Debug.LogError($"Failed to spawn merged planet with tag: {newTag}");
+        }
+    }
 }

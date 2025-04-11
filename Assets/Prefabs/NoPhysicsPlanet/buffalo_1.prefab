@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3985155488568007109}
   m_Layer: 0
   m_Name: buffalo_1
-  m_TagString: Untagged
+  m_TagString: animal_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
