@@ -66,7 +66,7 @@ public class ThrowPlanetController : MonoBehaviour
         // PlanetSelector.instance.PickNextPlanet();
         // SpawnAPlanet(PlanetSelector.instance.NextPlanet);
         NewSpawnAPlanet();
-        PlanetSelector.instance.PickNextPlanet();
+        // PlanetSelector.instance.PickNextPlanet();
     }
 
     public void ThrowPlanetAtPosition(Vector3 throwPosition)

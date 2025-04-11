@@ -83,6 +83,9 @@ public class PlanetPooler : MonoBehaviour
 
     private GameObject SetUpNoPhysPlanet(int i)
     {
+        if (i > 5)
+            return null;
+
         GameObject gameObject = CreateNewNoPhysPlanet(i);
         ToggleComponents(gameObject, false);
         gameObject.transform.SetParent(_throwingPlanetHolder, false);
@@ -111,7 +114,7 @@ public class PlanetPooler : MonoBehaviour
 
     public GameObject GetNoPhysPlanet(int index, Vector3 position)
     {
-        // NoPhysPlanets.ForEach(planet => planet.SetActive(false));
+        NoPhysPlanets.ForEach(planet => planet.SetActive(false));
         NoPhysPlanets[index].transform.position = position;
         NoPhysPlanets[index].SetActive(true);
 

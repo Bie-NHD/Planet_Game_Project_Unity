@@ -935,6 +935,7 @@ MonoBehaviour:
   _menuButton: {fileID: 0}
   _fadeTime: 2
   mergeEffectPrefab: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
+  AudioManager: {fileID: 0}
   GameObjectIndex: {fileID: 0}
   _planetPooler: {fileID: 0}
   TimeTillGameOver: 0.8
@@ -5261,7 +5262,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 1
