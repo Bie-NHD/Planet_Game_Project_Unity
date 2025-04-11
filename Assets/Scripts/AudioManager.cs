@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     AudioSource _soundEffectSource;
 
-        [SerializeField]
+    [SerializeField]
     private PlayerPrefsManager _playerPrefsManager;
 
     [Header("-----------Audio Clip----------")]
@@ -24,8 +24,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip thow;
     public AudioClip merge;
 
-    [SerializeField]
-    private PlayerPrefsManager _playerPrefsManager;
+    public AudioClip gameOver;
 
     private void Awake()
     {
@@ -39,14 +38,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-private void Start()
+    private void Start()
     {
-        musicSource.clip = background;
-        musicSource.Play();
+        _musicSource.clip = background;
+        _musicSource.Play();
     }
+
     public void PlaySFX(AudioClip clip)
     {
-        if (SFXSource.enabled == false)
+        if (_soundEffectSource.enabled == false)
         {
             Debug.Log("AudioManager: Sound source is disabled. Cannot play audio clip.");
             return;

@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
         AudioManager = GetComponentInChildren<AudioManager>();
     }
 
-
     public void AddScore(int score)
     {
         currentScore += score;
@@ -73,7 +72,6 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         StartCoroutine(PlayGameOverSound());
-        StartCoroutine(ShowGameOverScreen());
     }
 
     private IEnumerator ShakeCamera()
@@ -106,7 +104,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShowGameOverScreen()
     {
-
         // StartCoroutine(ShakeCamera());
         // Show gameOver screen
         _panelGameOver.gameObject.SetActive(true);
