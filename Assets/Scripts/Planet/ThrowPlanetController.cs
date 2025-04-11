@@ -17,8 +17,8 @@ public class ThrowPlanetController : MonoBehaviour
     [SerializeField]
     private Transform _parentAfterThrow;
 
-    [SerializeField]
-    private PlanetSelector _selector;
+    // [SerializeField]
+    // private PlanetSelector _selector;
 
     private PlayerController _playerController;
 
@@ -53,6 +53,8 @@ public class ThrowPlanetController : MonoBehaviour
             instance = this;
         }
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
+        _gameManager.TryGetComponent<PlanetPooler>(out _planetPooler);
 
         // m_onPlanetThrowEvent = new UnityEvent();
         // m_onPlanetThrowEvent.AddListener(OnPlanetThrowEvent);

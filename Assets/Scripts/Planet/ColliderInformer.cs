@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class ColliderInformer : MonoBehaviour
 {
     public bool WasCombinedIn { get; set; }
@@ -20,4 +21,9 @@ public class ColliderInformer : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        _hasCollided = false; // Reset the collision state when the script is disabled
+        WasCombinedIn = false; // Reset the combined state when the script is disabled
+    }
 }

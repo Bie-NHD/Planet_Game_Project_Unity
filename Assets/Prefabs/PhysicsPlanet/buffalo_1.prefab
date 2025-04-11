@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7428131680734440494}
   - component: {fileID: 3066325845050939802}
   - component: {fileID: -1140220670668593506}
+  - component: {fileID: 3663967291121288556}
   m_Layer: 8
   m_Name: buffalo_1
   m_TagString: Untagged
@@ -180,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aeb71f372f05e42bcc85776776782f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
 --- !u!114 &3066325845050939802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +197,7 @@ MonoBehaviour:
   PlanetIndex: 1
   PointsWhenAnnihilated: 3
   PlanetMass: 1.45
+  Scale: 0.3
 --- !u!114 &-1140220670668593506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,3 +210,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c3ee881ca3e094e9cdc9f3f4a02c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3663967291121288556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5377108782461580798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ef442f7aed9ee4b87ca63441cfda4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlanetIndex: 0
+  Points: 1
+  Mass: 1
+  Scale: 0.3

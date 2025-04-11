@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject MergeEffectLayer { get; private set; }
 
-    public AudioManager AudioManager => GameObjectIndex.AudioManager;
+    public AudioManager AudioManager;
 
     public GameObjectIndex GameObjectIndex;
 
@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("PlanetPooler not found in GameManager.");
             }
         }
+
+        AudioManager = GetComponentInChildren<AudioManager>();
     }
 
     public void AddScore(int score)
@@ -115,13 +117,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PlayGameOverSound()
     {
-        AudioManager audioManager = GameObjectIndex.AudioManager;
-
-        audioManager.ToggleMusic(false);
+        AudioManager.ToggleMusic(false);
         yield return new WaitForSecondsRealtime(0.5f);
-        audioManager.PlaySFX(audioManager.gameOver);
+        AudioManager.PlaySFX(AudioManager.gameOver);
         yield return new WaitForSecondsRealtime(4f); // GameOver sound duration
-        audioManager.ToggleMusic(true);
+        AudioManager.ToggleMusic(true);
     }
 
     private IEnumerator ShowGameOverScreen()

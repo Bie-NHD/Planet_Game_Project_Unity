@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -7410771731081713862}
   - component: {fileID: 2646714380855001480}
   - component: {fileID: 6487414284057512943}
+  - component: {fileID: 2931422947082439035}
   m_Layer: 8
   m_Name: chicken_3
   m_TagString: Untagged
@@ -180,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aeb71f372f05e42bcc85776776782f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
 --- !u!114 &2646714380855001480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +197,7 @@ MonoBehaviour:
   PlanetIndex: 3
   PointsWhenAnnihilated: 10
   PlanetMass: 1.35
+  Scale: 0.3
 --- !u!114 &6487414284057512943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,3 +210,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c3ee881ca3e094e9cdc9f3f4a02c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2931422947082439035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4218470222101831893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ef442f7aed9ee4b87ca63441cfda4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlanetIndex: 0
+  Points: 1
+  Mass: 1
+  Scale: 0.3
