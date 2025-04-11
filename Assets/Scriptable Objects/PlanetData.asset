@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d9a1947aacd424eb85f66ea3460911, type: 3}
+  m_Name: PlanetData
+  m_EditorClassIdentifier: 
+  planetPrefab: {fileID: 6112064227757786329, guid: d9ec77257665e8b4ca7c39f078a3ade9, type: 3}
+  planetSprites:
+  - {fileID: 7935234321397735378, guid: 92029cffb39b95943b5453ab643c37f3, type: 3}
+  - {fileID: 3994411631913423393, guid: 67bc40319c39b1d4ab5777af8d8f55bb, type: 3}
+  - {fileID: 6544188894419215680, guid: 2c16f7c29c0d2844db2ddad0a6064682, type: 3}
+  - {fileID: 8678448789981272047, guid: f46a0a9148f93784680253a598b309c7, type: 3}
+  - {fileID: 6168083732550661486, guid: f9e3e675a79b7ec4e97689162e9517b3, type: 3}
+  - {fileID: 6507982653818034734, guid: c49ae4e1341fba44188dce72a0c29e0d, type: 3}
+  - {fileID: 1480917699468073914, guid: 64c9c547bc720674eafe79abe7ce0ab8, type: 3}
+  - {fileID: 8868729072188591806, guid: 77b1966ac8b36384cac773c124c29dca, type: 3}
+  - {fileID: -8283620988547500454, guid: 33b919b9902dca64a86c4b7fe60f1042, type: 3}
+  - {fileID: 5158404753353345565, guid: a7790ad2abb0cb8489b7e201e6c1e130, type: 3}
+  - {fileID: -4589246329914201413, guid: 9d30962c4b2f77a4db53d501cfbc2aea, type: 3}
+  planetDataList:
+  - Index: 0
+    Points: 1
+    Mass: 1
+    Scale: 0.3
+  - Index: 1
+    Points: 2
+    Mass: 1.05
+    Scale: 0.375
+  - Index: 2
+    Points: 4
+    Mass: 1.1
+    Scale: 0.45
+  - Index: 3
+    Points: 8
+    Mass: 1.15
+    Scale: 0.525
+  - Index: 4
+    Points: 16
+    Mass: 1.2
+    Scale: 0.6
+  - Index: 5
+    Points: 32
+    Mass: 1.25
+    Scale: 0.675
+  - Index: 6
+    Points: 64
+    Mass: 1.3
+    Scale: 0.75
+  - Index: 7
+    Points: 128
+    Mass: 1.35
+    Scale: 0.825
+  - Index: 8
+    Points: 256
+    Mass: 1.4
+    Scale: 0.9
+  - Index: 9
+    Points: 512
+    Mass: 1.45
+    Scale: 0.975
+  - Index: 10
+    Points: 1024
+    Mass: 1.5
+    Scale: 1

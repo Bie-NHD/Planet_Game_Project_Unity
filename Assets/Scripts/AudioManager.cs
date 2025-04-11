@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("-----------Audio Clip----------")]
     public AudioClip background;
-    public AudioClip thow;
+    public AudioClip Throw;
     public AudioClip merge;
 
     public AudioClip gameOver;

@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,9 +37,15 @@ public class GameManager : MonoBehaviour
 
     public GameObject MergeEffectLayer { get; private set; }
 
-    public AudioManager AudioManager { get; private set; }
+    public AudioManager AudioManager => GameObjectIndex.AudioManager;
 
-    public float TimeTillGameOver = 0.5f; // Currrently set to 2.0f in the inspector
+    public GameObjectIndex GameObjectIndex;
+
+    [SerializeField]
+    private PlanetPooler _planetPooler;
+
+    [Range(0.5f, 2f)]
+    public float TimeTillGameOver; // Currrently set to 2.0f in the inspector
 
     private void OnEnable()
     {
@@ -56,9 +65,16 @@ public class GameManager : MonoBehaviour
         }
         _scoreText.text = currentScore.ToString("0");
 
-        AnimalHolderLayer = transform.GetChild(0).gameObject;
-        MergeEffectLayer = transform.GetChild(1).gameObject;
-        AudioManager = GetComponentInChildren<AudioManager>();
+        // AnimalHolderLayer = transform.GetChild(0).gameObject;
+        // MergeEffectLayer = transform.GetChild(1).gameObject;
+
+        if (_planetPooler == null)
+        {
+            if (!TryGetComponent<PlanetPooler>(out _planetPooler))
+            {
+                Debug.LogError("PlanetPooler not found in GameManager.");
+            }
+        }
     }
 
     public void AddScore(int score)
@@ -77,6 +93,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowGameOverScreen());
     }
 
+    // TODO(Duyen): Remove this or fix the shake effect
     private IEnumerator ShakeCamera()
     {
         Transform mainCameraTransform = Camera.main.transform;
@@ -98,11 +115,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PlayGameOverSound()
     {
-        AudioManager.ToggleMusic(false);
+        AudioManager audioManager = GameObjectIndex.AudioManager;
+
+        audioManager.ToggleMusic(false);
         yield return new WaitForSecondsRealtime(0.5f);
-        AudioManager.PlaySFX(AudioManager.gameOver);
+        audioManager.PlaySFX(audioManager.gameOver);
         yield return new WaitForSecondsRealtime(4f); // GameOver sound duration
-        AudioManager.ToggleMusic(true);
+        audioManager.ToggleMusic(true);
     }
 
     private IEnumerator ShowGameOverScreen()
@@ -165,4 +184,22 @@ public class GameManager : MonoBehaviour
     }
 
     public void OpenMenu() { }
+
+    public void RunMergeEffect(Vector3 position)
+    {
+        GameObject mergeEffect = Instantiate(mergeEffectPrefab, position, Quaternion.identity);
+    }
+
+    public void GetPlanetFromPool(int index, Vector3 position)
+    {
+        // GameObject gameObject = _planetPooler.GetPlanetPool(index).Get().gameObject;
+        GameObject gameObject = _planetPooler.GetPlanetFromStack(index);
+        gameObject.transform.position = position;
+    }
+
+    public void ReturnPlanetToPool(PlanetInfoHolder planetInfoHolder)
+    {
+        GameObject gameObject = planetInfoHolder.gameObject;
+        _planetPooler.AddPlanetToStack(planetInfoHolder.PlanetIndex, gameObject);
+    }
 }
