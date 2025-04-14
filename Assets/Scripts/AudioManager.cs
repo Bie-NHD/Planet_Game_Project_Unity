@@ -108,9 +108,42 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void ToggleMusic(bool isOn)
+    public void PauseMusic()
     {
-        ToggleAudio(AudioType.Music, isOn);
+        if (audioDictionary.TryGetValue(GetKey(AudioType.Music), out AudioWorker audioWorker))
+        {
+            if (audioWorker.IsPlaying)
+            {
+                audioWorker.Pause();
+            }
+            else
+            {
+                Debug.LogWarning($"AudioManager: Music is not playing. Cannot pause.");
+            }
+        }
+        else
+        {
+            Debug.LogError($"AudioManager: AudioWorker not found for type {AudioType.Music}.");
+        }
+    }
+
+    public void UnPauseMusic()
+    {
+        if (audioDictionary.TryGetValue(GetKey(AudioType.Music), out AudioWorker audioWorker))
+        {
+            if (!audioWorker.IsPlaying)
+            {
+                audioWorker.UnPause();
+            }
+            else
+            {
+                Debug.LogWarning($"AudioManager: Music is already playing. Cannot unpause.");
+            }
+        }
+        else
+        {
+            Debug.LogError($"AudioManager: AudioWorker not found for type {AudioType.Music}.");
+        }
     }
 
     public string GetKey(AudioType type)

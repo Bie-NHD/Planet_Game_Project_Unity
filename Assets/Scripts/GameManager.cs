@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -67,11 +66,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        StartCoroutine(ShowGameOverScreen());
         GetComponentInChildren<PlayerInput>().enabled = false;
-
-        Time.timeScale = 0f;
         StartCoroutine(PlayGameOverSound());
+        StartCoroutine(ShowGameOverScreen());
     }
 
     private IEnumerator ShakeCamera()
@@ -95,11 +92,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PlayGameOverSound()
     {
-        AudioManager.ToggleMusic(false);
+        AudioManager.PauseMusic();
         yield return new WaitForSecondsRealtime(0.5f);
         AudioManager.PlaySFX(AudioManager.gameOver);
         yield return new WaitForSecondsRealtime(4f); // GameOver sound duration
-        AudioManager.ToggleMusic(true);
+        AudioManager.UnPauseMusic();
     }
 
     private IEnumerator ShowGameOverScreen()
