@@ -13,6 +13,13 @@ public class AudioPrefConfig : BooleanPlayerPrefConfig
     public override void SetPref(bool value)
     {
         base.SetPref(value);
-        AudioSource.enabled = value;
+        if (AudioSource != null)
+        {
+            AudioSource.enabled = value;
+        }
+        else
+        {
+            Debug.LogError($"AudioPrefConfig: AudioSource is null for key {Key}.");
+        }
     }
 }
