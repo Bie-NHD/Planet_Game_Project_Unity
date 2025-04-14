@@ -56,5 +56,9 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Planet_Game_Project_Unity.sln"
+    "dotnet.defaultSolution": "Planet_Game_Project_Unity.sln",
+    "[csharp]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    }
 }

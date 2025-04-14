@@ -16,10 +16,10 @@ public class SwitchButton : MonoBehaviour
     [SerializeField]
     Image _image;
 
-    [Header("-----------Audio Type----------")]
-    [Tooltip("Select the type of audio to toggle")]
-    [SerializeField]
-    AudioType audioType = AudioType.Sound;
+    // [Header("-----------Audio Type----------")]
+    // [Tooltip("Select the type of audio to toggle")]
+    // [SerializeField]
+    // AudioType audioType = AudioType.Sound;
 
     public string positiveText = "Positive";
     public string negativeText = "Negative";
@@ -27,16 +27,29 @@ public class SwitchButton : MonoBehaviour
     public Sprite positiveSprite;
     public Sprite negativeSprite;
 
-    public bool isPositive { get; private set; } = true;
+    public bool IsPositive => AudioPrefConfig.GetPref();
 
-    private AudioManager _audioManager;
+    // private AudioManager _audioManager;
+
+    public AudioPrefConfig AudioPrefConfig;
+
+    private Button _button;
 
     public void Switch()
     {
-        isPositive = !isPositive;
-        _audioManager.ToggleAudio(audioType, isPositive);
+        AudioPrefConfig.TogglePref();
         UpdateUI();
     }
+
+    // void OnEnable()
+    // {
+    //     _button.onClick.AddListener(Switch);
+    // }
+
+    // void OnDisable()
+    // {
+    //     _button.onClick.RemoveListener(Switch);
+    // }
 
     void Awake()
     {
@@ -61,26 +74,29 @@ public class SwitchButton : MonoBehaviour
         {
             _image.sprite = positiveSprite;
         }
+
+        TryGetComponent<Button>(out _button);
+
         // 2. Check if the audio type is enabled or disabled
 
-        _audioManager = GameManager.instance.AudioManager;
+        // _audioManager = GameManager.instance.AudioManager;
 
-        switch (audioType)
-        {
-            case AudioType.Music:
-                isPositive = _audioManager.IsEnabled(audioType);
-                break;
-            case AudioType.Sound:
-                isPositive = _audioManager.IsEnabled(audioType);
-                break;
-        }
+        // switch (audioType)
+        // {
+        //     case AudioType.Music:
+        //         isPositive = _audioManager.IsEnabled(audioType);
+        //         break;
+        //     case AudioType.Sound:
+        //         isPositive = _audioManager.IsEnabled(audioType);
+        //         break;
+        // }
         // 3. Update UI based on the current state
         UpdateUI();
     }
 
     private void UpdateUI()
     {
-        if (isPositive)
+        if (IsPositive)
         {
             _textMeshProUGUI.text = positiveText;
             _image.sprite = positiveSprite;

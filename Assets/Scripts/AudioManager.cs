@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum AudioType
@@ -9,15 +11,14 @@ public enum AudioType
 
 public class AudioManager : MonoBehaviour
 {
-    [Header("-----------Audio Sources----------")]
-    [SerializeField]
-    AudioSource _musicSource;
+    // [Header("-----------Audio Sources----------")]
+    // [SerializeField]
+    // AudioSource _musicSource;
 
-    [SerializeField]
-    AudioSource _soundEffectSource;
+    // [SerializeField]
+    // AudioSource _soundEffectSource;
 
-    [SerializeField]
-    private PlayerPrefsManager _playerPrefsManager;
+
 
     [Header("-----------Audio Clip----------")]
     public AudioClip background;
@@ -26,100 +27,127 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip gameOver;
 
+    private Dictionary<string, AudioWorker> audioDictionary;
+
     private void Awake()
     {
-        SetUpAudioSource();
+        audioDictionary = GetComponentsInChildren<AudioWorker>()
+            .ToList()
+            .ToDictionary(audioWorker => audioWorker.Key, audioWorker => audioWorker);
 
-        if (_playerPrefsManager == null)
-        {
-            Debug.LogError(
-                "AudioManager: PlayerPrefsManager not found. AudioManager will not function properly."
-            );
-        }
+        Debug.Log($"AudioDictionary: {audioDictionary.ToString()}");
     }
 
     private void Start()
     {
-        _musicSource.clip = background;
-        _musicSource.Play();
+        if (TryGetAudioSource(AudioType.Music, out AudioSource musicSource))
+        {
+            musicSource.clip = background;
+            musicSource.Play();
+        }
     }
 
     public void PlaySFX(AudioClip clip)
     {
-        if (_soundEffectSource.enabled == false)
+        if (clip == null)
         {
-            Debug.Log("AudioManager: Sound source is disabled. Cannot play audio clip.");
+            Debug.LogError("AudioManager: AudioClip is null.");
             return;
         }
-        _soundEffectSource.PlayOneShot(clip);
+
+        if (audioDictionary.TryGetValue(GetKey(AudioType.Sound), out AudioWorker audioWorker))
+        {
+            audioWorker.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogError($"AudioManager: AudioWorker not found for type {AudioType.Sound}.");
+        }
     }
 
-    public void ToggleAudio(AudioType type, bool isOn)
+    public void ToggleAudio(AudioType type, bool isOn = true)
     {
-        switch (type)
+        if (audioDictionary.TryGetValue(GetKey(type), out AudioWorker audioWorker))
         {
-            case AudioType.Music:
-                ToggleMusic(isOn);
-                _playerPrefsManager.TogglePlayerPref(PlayerPrefsKeys.MusicPref, isOn);
-                break;
-            case AudioType.Sound:
-                _soundEffectSource.enabled = !_soundEffectSource.enabled;
-                _playerPrefsManager.TogglePlayerPref(PlayerPrefsKeys.SoundPref, isOn);
-                break;
+            if (isOn)
+            {
+                audioWorker.Enable();
+            }
+            else
+            {
+                audioWorker.Disable();
+            }
+        }
+        else
+        {
+            Debug.LogError($"AudioManager: AudioWorker not found for type {type}.");
+        }
+    }
+
+    public void Enable(AudioType type)
+    {
+        if (audioDictionary.TryGetValue(GetKey(type), out AudioWorker audioWorker))
+        {
+            audioWorker.Enable();
+        }
+        else
+        {
+            Debug.LogError($"AudioManager: AudioWorker not found for type {type}.");
+        }
+    }
+
+    public void Disable(AudioType type)
+    {
+        if (audioDictionary.TryGetValue(GetKey(type), out AudioWorker audioWorker))
+        {
+            audioWorker.Disable();
+        }
+        else
+        {
+            Debug.LogError($"AudioManager: AudioWorker not found for type {type}.");
         }
     }
 
     public void ToggleMusic(bool isOn)
     {
-        switch (isOn)
-        {
-            case true:
-
-                if (_musicSource.enabled == false)
-                {
-                    _musicSource.enabled = true;
-                }
-
-                if (_musicSource.isPlaying == false)
-                {
-                    _musicSource.Play();
-                    break;
-                }
-                else
-                {
-                    _musicSource.UnPause();
-                    break;
-                }
-            case false:
-                _musicSource.Pause();
-                break;
-        }
+        ToggleAudio(AudioType.Music, isOn);
     }
 
-    private void SetUpAudioSource()
+    public string GetKey(AudioType type)
     {
-        // setup music source
-        _musicSource.clip = background;
-        _musicSource.loop = true;
-        _musicSource.enabled = _playerPrefsManager.MusicPref == 1 ? true : false;
-        if (_musicSource.enabled)
+        string name = Enum.GetName(typeof(AudioType), type) ?? string.Empty;
+        if (string.IsNullOrEmpty(name))
         {
-            _musicSource.Play();
+            Debug.LogError($"AudioManager: Invalid AudioType {type}.");
+            return string.Empty;
         }
-        // setup sound effect source
-        _soundEffectSource.enabled = _playerPrefsManager.SoundPref == 1 ? true : false;
+        return $"{name.ToLower()}_enabled";
     }
 
-    public bool IsEnabled(AudioType type)
+    public AudioSource GetAudioSource(AudioType type)
     {
-        switch (type)
+        string key = GetKey(type);
+        if (string.IsNullOrEmpty(key))
         {
-            case AudioType.Music:
-                return _musicSource.enabled;
-            case AudioType.Sound:
-                return _soundEffectSource.enabled;
-            default:
-                return false;
+            Debug.LogError($"AudioManager: Invalid AudioType {type}.");
+            return null;
         }
+
+        AudioSource audioSource = audioDictionary.TryGetValue(key, out AudioWorker audioWorker)
+            ? audioWorker.AudioSource
+            : null;
+        if (audioSource == null)
+        {
+            Debug.LogError($"AudioManager: AudioSource not found for key {key}.");
+            return null;
+        }
+
+        return audioSource;
+    }
+
+    public bool TryGetAudioSource(AudioType type, out AudioSource audioSource)
+    {
+        audioSource = GetAudioSource(type);
+        return audioSource != null;
     }
 }
