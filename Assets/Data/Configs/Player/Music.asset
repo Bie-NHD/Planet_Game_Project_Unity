@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsEnabled: 1
   _key: music_enabled
+  Key: music_enabled
   IsLoop: 1
+  AudioSource: {fileID: 0}
