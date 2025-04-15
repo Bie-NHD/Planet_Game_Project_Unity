@@ -11,9 +11,8 @@ public class PlanetCombiner : MonoBehaviour
     {
         _info = GetComponent<PlanetInfo>();
         _layerIndex = gameObject.layer;
-    
-            audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
-        
+
+        audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -36,39 +35,42 @@ public class PlanetCombiner : MonoBehaviour
 
     private void HandlePlanetMerge(GameObject otherPlanet, PlanetInfo otherInfo)
     {
-        if (_info == null) return;
-        Debug.Log($"Starting merge of planets with index {_info.PlanetIndex}");
+        if (_info == null)
+            return;
+        // Debug.Log($"Starting merge of planets with index {_info.PlanetIndex}");
 
-        
-        GameManager.instance.AddScore(_info.PointsWhenAnnihilated);
+        // GameManager.instance.AddScore(_info.PointsWhenAnnihilated);
+        GameManager.UpdateScoreEvent.Invoke(_info.PointsWhenAnnihilated);
 
-        
         Vector3 middlePosition = (transform.position + otherPlanet.transform.position) / 2;
         audioManager.PlaySFX(audioManager.merge);
 
         if (GameManager.instance.mergeEffectPrefab != null)
         {
-            GameObject effect = Instantiate(GameManager.instance.mergeEffectPrefab, 
-                middlePosition, 
-                Quaternion.identity, 
-                GameManager.instance.MergeEffectLayer.transform);
+            GameObject effect = Instantiate(
+                GameManager.instance.mergeEffectPrefab,
+                middlePosition,
+                Quaternion.identity,
+                GameManager.instance.MergeEffectLayer.transform
+            );
             Destroy(effect, 2f);
         }
 
         if (_info.PlanetIndex >= PlanetSelector.instance.MaxMergeIndex)
         {
-            Debug.Log($"Reached maximum merge level ({PlanetSelector.instance.MaxMergeIndex}), destroying planets");
-           
+            Debug.Log(
+                $"Reached maximum merge level ({PlanetSelector.instance.MaxMergeIndex}), destroying planets"
+            );
+
             PlanetObjectPool.Instance.ReturnToPool(otherPlanet);
             PlanetObjectPool.Instance.ReturnToPool(gameObject);
         }
         else
         {
-            Debug.Log($"Merging planets to create index {_info.PlanetIndex + 1}");
-           
+            // Debug.Log($"Merging planets to create index {_info.PlanetIndex + 1}");
+
             SpawnMergedPlanet(middlePosition, _info.PlanetIndex + 1);
 
-         
             PlanetObjectPool.Instance.ReturnToPool(otherPlanet);
             PlanetObjectPool.Instance.ReturnToPool(gameObject);
         }
@@ -77,7 +79,7 @@ public class PlanetCombiner : MonoBehaviour
     private void SpawnMergedPlanet(Vector3 position, int newIndex)
     {
         string newTag = $"animal_{newIndex}";
-         Debug.Log($"Attempting to spawn merged planet with tag {newTag}");
+        // Debug.Log($"Attempting to spawn merged planet with tag {newTag}");
         GameObject newPlanet = PlanetObjectPool.Instance.SpawnFromPool(
             newTag,
             position,
@@ -88,24 +90,25 @@ public class PlanetCombiner : MonoBehaviour
 
         if (newPlanet != null)
         {
-        
             newPlanet.SetActive(true);
 
             var rb = newPlanet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
-                rb.AddForce(Vector3.up * (4f / Mathf.Max(2, _info.PlanetIndex)), ForceMode2D.Impulse);
+                rb.AddForce(
+                    Vector3.up * (4f / Mathf.Max(2, _info.PlanetIndex)),
+                    ForceMode2D.Impulse
+                );
             }
 
             var informer = newPlanet.GetComponent<ColliderInformer>();
             if (informer != null)
             {
-                informer.ResetCollisionState(); 
+                informer.ResetCollisionState();
                 informer.WasCombinedIn = true;
             }
 
-          
             var planetInfo = newPlanet.GetComponent<PlanetInfo>();
             if (planetInfo != null)
             {

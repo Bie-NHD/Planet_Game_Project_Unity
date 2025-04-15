@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -34,6 +34,10 @@ public class GameManager : MonoBehaviour
 
     public AudioManager AudioManager { get; private set; }
 
+    public HighScoreManager HighScoreManager;
+
+    public static UnityEvent<int> UpdateScoreEvent = new();
+
     public float TimeTillGameOver = 0.5f;
 
     private void OnEnable()
@@ -57,21 +61,34 @@ public class GameManager : MonoBehaviour
         AnimalHolderLayer = transform.GetChild(0).gameObject;
         MergeEffectLayer = transform.GetChild(1).gameObject;
         AudioManager = GetComponentInChildren<AudioManager>();
+        if (HighScoreManager == null)
+        {
+            TryGetComponent(out HighScoreManager);
+        }
+    }
+
+    void Start()
+    {
+        UpdateScoreEvent.AddListener(AddScore);
+    }
+
+    void OnDestroy()
+    {
+        UpdateScoreEvent.RemoveAllListeners();
     }
 
     public void AddScore(int score)
     {
         currentScore += score;
         _scoreText.text = currentScore.ToString("0");
+        HighScoreManager.UpdateHighScoreEvent.Invoke(currentScore);
     }
 
     public void GameOver()
     {
-        StartCoroutine(ShowGameOverScreen());
         GetComponentInChildren<PlayerInput>().enabled = false;
-
-        Time.timeScale = 0f;
         StartCoroutine(PlayGameOverSound());
+        StartCoroutine(ShowGameOverScreen());
     }
 
     private IEnumerator ShakeCamera()
@@ -95,11 +112,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PlayGameOverSound()
     {
-        AudioManager.ToggleMusic(false);
+        AudioManager.PauseMusic();
         yield return new WaitForSecondsRealtime(0.5f);
         AudioManager.PlaySFX(AudioManager.gameOver);
         yield return new WaitForSecondsRealtime(4f); // GameOver sound duration
-        AudioManager.ToggleMusic(true);
+        AudioManager.UnPauseMusic();
     }
 
     private IEnumerator ShowGameOverScreen()

@@ -10,20 +10,17 @@ public class BooleanPlayerPrefConfig : BasePlayerPrefConfig<bool>
     [SerializeField]
     private bool IsEnabled = true;
 
-    [SerializeField]
-    private new string _key = string.Empty;
-
-    public string Key => _key;
+    public new string Key;
 
     void Awake()
     {
-        if (!PlayerPrefs.HasKey(_key))
+        if (!PlayerPrefs.HasKey(Key))
         {
             SetPref(IsEnabled);
         }
         else
         {
-            IsEnabled = MathUtils.Clamp01ToBool(PlayerPrefs.GetInt(_key));
+            IsEnabled = MathUtils.Clamp01ToBool(PlayerPrefs.GetInt(Key));
         }
     }
 
@@ -34,7 +31,7 @@ public class BooleanPlayerPrefConfig : BasePlayerPrefConfig<bool>
 
     public override void SetPref(bool value)
     {
-        PlayerPrefs.SetInt(_key, MathUtils.BoolToInt(value));
+        PlayerPrefs.SetInt(Key, MathUtils.BoolToInt(value));
         PlayerPrefs.Save(); // TODO: Check performance impact
         IsEnabled = value;
     }
