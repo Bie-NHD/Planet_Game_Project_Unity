@@ -73,3 +73,13 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# External Dependency Manager
+/[Aa]ssets/ExternalDependencyManager/
+/[Aa]ssets/ExternalDependencyManager.meta
+/[Aa]ssets/ExternalDependencyManager/Editor/
+/[Aa]ssets/ExternalDependencyManager/Editor.meta
+/[Aa]ssets/ExternalDependencyManager/Editor/1.2.185.meta
+
+# Project Settings
+/[Pp]rojectSettings/GvhProjectSettings.xml

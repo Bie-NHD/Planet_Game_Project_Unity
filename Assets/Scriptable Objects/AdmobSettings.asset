@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d66eab83fe980d5458f0e1ace26c76a3, type: 3}
+  m_Name: AdmobSettings
+  m_EditorClassIdentifier: 
+  AndroidAppId: ca-app-pub-9713315018110691~3356572878
+  AndroidBannerId: ca-app-pub-9713315018110691/1144746036
+  AndroidInterstitialId: ca-app-pub-9713315018110691/7981617128
+  AndroidRewardedId: ca-app-pub-9713315018110691/1068363023
+  IOSAppId: 
+  IOSBannerId: 
+  IOSInterstitialId: 
+  IOSRewardedId: 
