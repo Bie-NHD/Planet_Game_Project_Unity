@@ -16,7 +16,9 @@ MonoBehaviour:
   AndroidBannerId: ca-app-pub-9713315018110691/1144746036
   AndroidInterstitialId: ca-app-pub-9713315018110691/7981617128
   AndroidRewardedId: ca-app-pub-9713315018110691/1068363023
+  AndroidAppOpenId: ca-app-pub-3940256099942544/9257395921
   IOSAppId: 
   IOSBannerId: 
   IOSInterstitialId: 
   IOSRewardedId: 
+  IOSAppOpenId: 

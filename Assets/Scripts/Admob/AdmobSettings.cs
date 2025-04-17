@@ -8,12 +8,14 @@ public class AdmobSettings : ScriptableObject
     public string AndroidBannerId;
     public string AndroidInterstitialId;
     public string AndroidRewardedId;
+    public string AndroidAppOpenId;
 
     [Header("iOS")]
     public string IOSAppId;
     public string IOSBannerId;
     public string IOSInterstitialId;
     public string IOSRewardedId;
+    public string IOSAppOpenId;
 
     public string GetAppId()
     {
