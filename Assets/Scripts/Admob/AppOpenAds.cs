@@ -2,16 +2,20 @@
 using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
+using TMPro;
 
 public class AppOpenAds : MonoBehaviour
 {
     public static AppOpenAds Instance { get; private set; }
     
     [SerializeField] private AdmobSettings settings;
+    [SerializeField] private TextMeshProUGUI loadingText;
+    
     private AppOpenAd appOpenAd;
     private bool isShowingAd = false;
     private DateTime loadTime;
-        private bool isFirstTime = true;
+    private bool isFirstTime = true;
+    private bool isLoading = false;
     private void Awake()
     {
         if (Instance == null)
@@ -47,13 +51,16 @@ public class AppOpenAds : MonoBehaviour
             appOpenAd.Destroy();
             appOpenAd = null;
         }
-
+        isLoading = true;
+        ShowLoadingText();
         // Create request
         var request = new AdRequest();
 
         // Load ad
         AppOpenAd.Load(adUnitId, request, (AppOpenAd ad, LoadAdError error) =>
         {
+             isLoading = false;
+            HideLoadingText();
             if (error != null)
             {
                 Debug.LogError($"Failed to load app open ad: {error.GetMessage()}");
@@ -69,7 +76,21 @@ public class AppOpenAds : MonoBehaviour
         });
         
     }
+ private void ShowLoadingText()
+    {
+        if (loadingText != null)
+        {
+            loadingText.gameObject.SetActive(true);
+        }
+    }
 
+    private void HideLoadingText()
+    {
+        if (loadingText != null)
+        {
+            loadingText.gameObject.SetActive(false);
+        }
+    }
     private void RegisterEventHandlers(AppOpenAd ad)
     {
         // Raised when the ad is estimated to have earned money.
@@ -93,6 +114,7 @@ public class AppOpenAds : MonoBehaviour
         ad.OnAdFullScreenContentOpened += () =>
         {
                 isShowingAd = true;
+                   HideLoadingText();
             Debug.Log("App open ad full screen content opened.");
         };
         // Raised when the ad closed full screen content.
@@ -106,6 +128,7 @@ public class AppOpenAds : MonoBehaviour
         ad.OnAdFullScreenContentFailed += (AdError error) =>
         {
              isShowingAd = false;
+              HideLoadingText();
             Debug.LogError("App open ad failed to open full screen content " +
                            "with error : " + error);
                             LoadAd();
@@ -113,6 +136,11 @@ public class AppOpenAds : MonoBehaviour
     }
     public void ShowAdIfAvailable()
     {
+         if (isLoading)
+        {
+            Debug.Log("Ad is still loading...");
+            return;
+        }
             Debug.Log($"AppOpenAds: ShowAdIfAvailable called. IsAdAvailable: {IsAdAvailable}, isShowingAd: {isShowingAd}");
         if (!IsAdAvailable || isShowingAd)
         {
