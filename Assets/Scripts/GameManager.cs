@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    [SerializeField] private InterstitialAds interstitialAds;
     public int currentScore { get; set; }
 
     [SerializeField]
@@ -87,8 +88,9 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         GetComponentInChildren<PlayerInput>().enabled = false;
-        StartCoroutine(PlayGameOverSound());
-        StartCoroutine(ShowGameOverScreen());
+            StartCoroutine(PlayGameOverSound());
+            StartCoroutine(ShowGameOverScreen());
+      
     }
 
     private IEnumerator ShakeCamera()
@@ -146,8 +148,21 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Time.timeScale = 1f;
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+          if (interstitialAds != null)
+        {
+            interstitialAds.ShowAd(() => {
+                // Callback này sẽ được gọi sau khi ad đóng
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            });
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     private void FadeGame(Scene scene, LoadSceneMode mode)

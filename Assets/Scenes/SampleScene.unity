@@ -1118,6 +1118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94cdfd3af4176bd4aa312d6fa2c4e095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interstitialAds: {fileID: 925315668}
   _scoreText: {fileID: 1721451620}
   _panelGameOver: {fileID: 1574342567}
   _panelGameOn: {fileID: 949754684}
@@ -2914,6 +2915,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &925315666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 925315667}
+  - component: {fileID: 925315668}
+  m_Layer: 0
+  m_Name: InteritialAds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &925315667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925315666}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1746937381}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &925315668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925315666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee732a2c3398af248bce4c1a475b1674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: b716af9135932404b93c37b63b307a47, type: 2}
 --- !u!1 &933179204
 GameObject:
   m_ObjectHideFlags: 0
@@ -6380,7 +6426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1736660340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6520,6 +6566,7 @@ Transform:
   m_Children:
   - {fileID: 1954534386}
   - {fileID: 1736660341}
+  - {fileID: 925315667}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1754726907
