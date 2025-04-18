@@ -9,6 +9,7 @@ public class InterstitialAds : MonoBehaviour
     private InterstitialAd interstitialAd;
     private bool isLoading;
     private Action onAdClosed;
+        public bool IsShowingAd { get; private set; }
 
     private void Start()
     {
@@ -61,6 +62,7 @@ public class InterstitialAds : MonoBehaviour
         // Raised when the ad is estimated to have earned money.
         ad.OnAdPaid += (AdValue adValue) =>
         {
+            
             Debug.Log($"Interstitial ad paid {adValue.Value} {adValue.CurrencyCode}");
         };
 
@@ -78,13 +80,14 @@ public class InterstitialAds : MonoBehaviour
 
         // Raised when an ad opened full screen content.
         ad.OnAdFullScreenContentOpened += () =>
-        {
+        {  IsShowingAd = true;
             Debug.Log("Interstitial ad opening.");
         };
 
         // Raised when the ad closed full screen content.
         ad.OnAdFullScreenContentClosed += () =>
         {
+              IsShowingAd = false;
             Debug.Log("Interstitial ad closed.");
             LoadAd(); // Load the next interstitial ad
             
@@ -96,6 +99,7 @@ public class InterstitialAds : MonoBehaviour
         // Raised when the ad failed to open full screen content.
         ad.OnAdFullScreenContentFailed += (AdError error) =>
         {
+              IsShowingAd = false;
             Debug.LogError($"Interstitial ad failed to open full screen content with error: {error.GetMessage()}");
             LoadAd(); // Try to load another ad
             

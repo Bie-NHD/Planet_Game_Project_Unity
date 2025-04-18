@@ -123,8 +123,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShowGameOverScreen()
     {
-        // StartCoroutine(ShakeCamera());
-        // Show gameOver screen
+
         _panelGameOver.gameObject.SetActive(true);
         Color startColor = _panelGameOver.color;
         startColor.a = 0f;
@@ -143,24 +142,34 @@ public class GameManager : MonoBehaviour
         // Hiện nút restart sau khi GameOver xuất hiện
         _panelGameOver.transform.GetChild(1).gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
+           if (!interstitialAds?.IsShowingAd ?? true)
+    {
         Time.timeScale = 0f;
+    }
     }
 
     public void RestartGame()
     {
-        // Time.timeScale = 1f;
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+         
           if (interstitialAds != null)
         {
+              Time.timeScale = 1f;
             interstitialAds.ShowAd(() => {
                 // Callback này sẽ được gọi sau khi ad đóng
-                Time.timeScale = 1f;
+                if (_panelGameOver != null)
+            {
+                _panelGameOver.gameObject.SetActive(false);
+            }
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             });
         }
         else
         {
-            Time.timeScale = 1f;
+           Time.timeScale = 1f;
+        if (_panelGameOver != null)
+        {
+            _panelGameOver.gameObject.SetActive(false);
+        }
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }

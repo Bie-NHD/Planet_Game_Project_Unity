@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: AdmobSettings
   m_EditorClassIdentifier: 
   AndroidAppId: ca-app-pub-3940256099942544~3347511713
-  AndroidBannerId: 'ca-app-pub-3940256099942544/6300978111 '
-  AndroidInterstitialId: 'ca-app-pub-3940256099942544/1033173712 '
-  AndroidRewardedId: 'ca-app-pub-3940256099942544/5224354917 '
-  AndroidAppOpenId: ca-app-pub-3940256099942544/3419835294
+  AndroidBannerId: ca-app-pub-3940256099942544/6300978111
+  AndroidInterstitialId: ca-app-pub-3940256099942544/1033173712
+  AndroidRewardedId: ca-app-pub-3940256099942544/5224354917
+  AndroidAppOpenId: ca-app-pub-3940256099942544/9257395921
   IOSAppId: 
   IOSBannerId: 
   IOSInterstitialId: 
