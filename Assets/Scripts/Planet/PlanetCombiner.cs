@@ -7,26 +7,34 @@ public class PlanetCombiner : MonoBehaviour
     private PlanetInfo _info;
     private AudioManager audioManager;
 
+ private bool _isProcessingMerge = false;
     private void OnEnable()
     {
         _info = GetComponent<PlanetInfo>();
         _layerIndex = gameObject.layer;
 
+ _isProcessingMerge = false; 
         audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+         if (_isProcessingMerge) return;
         if (collision.gameObject.layer == _layerIndex)
         {
             PlanetInfo otherInfo = collision.gameObject.GetComponent<PlanetInfo>();
             if (otherInfo != null && _info != null && _info.PlanetIndex == otherInfo.PlanetIndex)
             {
+                      PlanetCombiner otherCombiner = collision.gameObject.GetComponent<PlanetCombiner>();
+                if (otherCombiner != null && otherCombiner._isProcessingMerge) return;
+
                 int thisID = gameObject.GetInstanceID();
                 int otherID = collision.gameObject.GetInstanceID();
 
                 if (thisID > otherID)
                 {
+                       _isProcessingMerge = true;
+                    otherCombiner._isProcessingMerge = true;
                     HandlePlanetMerge(collision.gameObject, otherInfo);
                 }
             }

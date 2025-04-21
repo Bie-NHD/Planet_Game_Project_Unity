@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
+using System.Collections;
 
 public class InterstitialAds : MonoBehaviour
 {
@@ -8,8 +9,9 @@ public class InterstitialAds : MonoBehaviour
     
     private InterstitialAd interstitialAd;
     private bool isLoading;
-    private Action onAdClosed;
-        public bool IsShowingAd { get; private set; }
+
+    private Action onAdClosedCallback;
+    public bool IsShowingAd { get; private set; }
 
     private void Start()
     {
@@ -59,25 +61,7 @@ public class InterstitialAds : MonoBehaviour
 
     private void RegisterEventHandlers(InterstitialAd ad)
     {
-        // Raised when the ad is estimated to have earned money.
-        ad.OnAdPaid += (AdValue adValue) =>
-        {
-            
-            Debug.Log($"Interstitial ad paid {adValue.Value} {adValue.CurrencyCode}");
-        };
-
-        // Raised when an impression is recorded for an ad.
-        ad.OnAdImpressionRecorded += () =>
-        {
-            Debug.Log("Interstitial ad recorded an impression.");
-        };
-
-        // Raised when a click is recorded for an ad.
-        ad.OnAdClicked += () =>
-        {
-            Debug.Log("Interstitial ad was clicked.");
-        };
-
+        
         // Raised when an ad opened full screen content.
         ad.OnAdFullScreenContentOpened += () =>
         {  IsShowingAd = true;
@@ -90,10 +74,11 @@ public class InterstitialAds : MonoBehaviour
               IsShowingAd = false;
             Debug.Log("Interstitial ad closed.");
             LoadAd(); // Load the next interstitial ad
-            
-            // Invoke callback if exists
-            onAdClosed?.Invoke();
-            onAdClosed = null;
+
+            UnityMainThreadDispatcher.Enqueue(() => {
+                onAdClosedCallback?.Invoke();
+                onAdClosedCallback = null;
+            });
         };
 
         // Raised when the ad failed to open full screen content.
@@ -102,27 +87,28 @@ public class InterstitialAds : MonoBehaviour
               IsShowingAd = false;
             Debug.LogError($"Interstitial ad failed to open full screen content with error: {error.GetMessage()}");
             LoadAd(); // Try to load another ad
-            
-            // Invoke callback if exists since we won't show the ad
-            onAdClosed?.Invoke();
-            onAdClosed = null;
+                      // Call on main thread
+            UnityMainThreadDispatcher.Enqueue(() => {
+                onAdClosedCallback?.Invoke();
+                onAdClosedCallback = null;
+            });
         };
     }
 
-    public void ShowAd(Action onClose = null)
+    public void ShowAd(Action callback)
     {
         if (interstitialAd != null && interstitialAd.CanShowAd())
         {
-            onAdClosed = onClose;
+            IsShowingAd = true;
+            onAdClosedCallback = callback;
             interstitialAd.Show();
         }
         else
         {
-            Debug.LogWarning("Interstitial ad not ready yet.");
-            onClose?.Invoke(); // Call the callback immediately if ad isn't ready
-            LoadAd(); // Try to load a new ad for next time
+            callback?.Invoke();
         }
     }
+
 
     private void OnDestroy()
     {
