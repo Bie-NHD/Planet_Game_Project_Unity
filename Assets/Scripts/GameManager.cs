@@ -147,30 +147,33 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
     }
-
+private bool isRestarting = false;
     public void RestartGame()
-    {
+    { 
+          if (isRestarting) return;
+            isRestarting = true;
+            Time.timeScale = 1f;
          
           if (interstitialAds != null)
         {
-              Time.timeScale = 1f;
+
             interstitialAds.ShowAd(() => {
-                // Callback này sẽ được gọi sau khi ad đóng
-                if (_panelGameOver != null)
-            {
-                _panelGameOver.gameObject.SetActive(false);
-            }
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                UnityMainThreadDispatcher.Enqueue(() =>
+                {
+                    isRestarting = false;
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                });
+
             });
         }
         else
         {
-           Time.timeScale = 1f;
-        if (_panelGameOver != null)
-        {
-            _panelGameOver.gameObject.SetActive(false);
-        }
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            UnityMainThreadDispatcher.Enqueue(() =>
+            {
+                isRestarting = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            });
         }
     }
 
