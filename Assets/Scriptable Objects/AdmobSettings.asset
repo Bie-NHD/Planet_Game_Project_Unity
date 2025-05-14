@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66eab83fe980d5458f0e1ace26c76a3, type: 3}
   m_Name: AdmobSettings
   m_EditorClassIdentifier: 
-  AndroidAppId: ca-app-pub-9713315018110691~3356572878
-  AndroidBannerId: ca-app-pub-9713315018110691/1144746036
-  AndroidInterstitialId: ca-app-pub-9713315018110691/7981617128
-  AndroidRewardedId: ca-app-pub-9713315018110691/1068363023
+  AndroidAppId: ca-app-pub-5286796485547681~4001704620
+  AndroidBannerId: ca-app-pub-5286796485547681/9665088674
+  AndroidInterstitialId: ca-app-pub-5286796485547681/8408275920
+  AndroidRewardedId: ca-app-pub-5286796485547681/4116691016
   AndroidAppOpenId: ca-app-pub-3940256099942544/9257395921
   IOSAppId: 
   IOSBannerId: 
