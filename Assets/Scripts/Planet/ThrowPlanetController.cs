@@ -74,7 +74,9 @@ public class ThrowPlanetController : MonoBehaviour
         if (physicsPlanet != null)
         {
             var rb = physicsPlanet.GetComponent<Rigidbody2D>();
-            
+            var eyeAnimator = physicsPlanet.GetComponent<EyeAnimatorController>();
+            if (eyeAnimator != null)
+                eyeAnimator.SetCloseEye(false);
         }
 
         PlanetObjectPool.Instance.ReturnToPool(CurrentPlanet);

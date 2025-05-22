@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     //// Thêm biến để theo dõi vị trí đích cần di chuyển đến khi tap
     private Vector3 _targetPosition;
 
+    private EyeAnimatorController _eyeAnimatorController;
+
     private void Awake()
     {
         _bounds = _boundaries.bounds;
@@ -32,6 +34,8 @@ public class PlayerController : MonoBehaviour
         _mainCamera = Camera.main;
 
         _targetPosition = transform.position;
+
+        _eyeAnimatorController = GetComponent<EyeAnimatorController>();
     }
                                                 
     void Update()
@@ -49,18 +53,24 @@ public class PlayerController : MonoBehaviour
             transform.position = _targetPosition;
             if (ThrowPlanetController.instance.CanThrow)
             {
+                 if (_eyeAnimatorController != null)
+         _eyeAnimatorController.SetCloseEye(true);
                 ThrowPlanetController.instance.ThrowPlanetAtPosition(_targetPosition);
             }
         }
         // Xử lý khi người dùng kéo (trường hợp IsDragging = true)
         else if (_useDirectPosition && Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed && UserInput.IsDragging)
         {
+           
+
             Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             Vector3 worldPosition = _mainCamera.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 10f));
 
             Vector3 newPosition = new Vector3(worldPosition.x, transform.position.y, transform.position.z);
             newPosition.x = Mathf.Clamp(newPosition.x, _leftBounds, _rightBounds);
             transform.position = newPosition;
+             if (_eyeAnimatorController != null)
+         _eyeAnimatorController.SetCloseEye(true);
         }
         // Trường hợp di chuyển bằng delta
         else
@@ -68,6 +78,8 @@ public class PlayerController : MonoBehaviour
             Vector3 newPosition = transform.position + new Vector3(UserInput.MoveInput.x * _moveSpeed * Time.deltaTime, 0f, 0f);
             newPosition.x = Mathf.Clamp(newPosition.x, _leftBounds, _rightBounds);
             transform.position = newPosition;
+          if (_eyeAnimatorController != null)
+         _eyeAnimatorController.SetCloseEye(true);
         }
     }
 

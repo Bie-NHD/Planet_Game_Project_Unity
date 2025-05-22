@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlanetCombiner : MonoBehaviour
 {
     private int _layerIndex;
-    private PlanetInfo _info;
+    private PlanetInfo _info;   
     private AudioManager audioManager;
 
  private bool _isProcessingMerge = false;
@@ -19,7 +19,12 @@ public class PlanetCombiner : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-         if (_isProcessingMerge) return;
+        var eyeAnimator = GetComponent<EyeAnimatorController>();
+        if (eyeAnimator != null)
+            eyeAnimator.SetCloseEye(true);
+    StartCoroutine(OpenEyeAfterDelay(0.2f));
+    
+        if (_isProcessingMerge) return;
         if (collision.gameObject.layer == _layerIndex)
         {
             PlanetInfo otherInfo = collision.gameObject.GetComponent<PlanetInfo>();
@@ -40,7 +45,13 @@ public class PlanetCombiner : MonoBehaviour
             }
         }
     }
-
+private IEnumerator OpenEyeAfterDelay(float delay)
+{
+    yield return new WaitForSeconds(delay);
+    var eyeAnimator = GetComponent<EyeAnimatorController>();
+    if (eyeAnimator != null && !_isProcessingMerge) // Chỉ mở mắt nếu không đang trong quá trình merge
+        eyeAnimator.SetCloseEye(false);
+}
     private void HandlePlanetMerge(GameObject otherPlanet, PlanetInfo otherInfo)
     {
         if (_info == null)

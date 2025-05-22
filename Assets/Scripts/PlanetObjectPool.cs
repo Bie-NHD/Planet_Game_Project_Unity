@@ -133,6 +133,11 @@ public class PlanetObjectPool : MonoBehaviour
         {
             informer.ResetCollisionState();
         }
+ var eyeAnimator = obj.GetComponent<EyeAnimatorController>();
+    if (eyeAnimator != null)
+    {
+        eyeAnimator.SetCloseEye(false); // Set trạng thái mặc định là nhắm mắt
+    }
 
         obj.SetActive(true);
     }
