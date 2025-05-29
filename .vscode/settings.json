@@ -59,6 +59,6 @@
     "dotnet.defaultSolution": "Planet_Game_Project_Unity.sln",
     "[csharp]": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "csharpier.csharpier-vscode"
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
     }
 }

@@ -7,7 +7,7 @@ public class PlanetCombiner : MonoBehaviour
     private PlanetInfo _info;   
     private AudioManager audioManager;
 
- private bool _isProcessingMerge = false;
+ private bool _isProcessingMerge = false;   
     private void OnEnable()
     {
         _info = GetComponent<PlanetInfo>();

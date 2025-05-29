@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour
     {
         _bounds = _boundaries.bounds;
         //_offset = transform.position.x - _planetThrowTransform.position.x;
-        _leftBounds = _bounds.min.x ;
-        _rightBounds = _bounds.max.x ;
+        _leftBounds = _bounds.min.x;
+        _rightBounds = _bounds.max.x;
         _startingLeftBounds = _leftBounds;
         _startingRightBounds = _rightBounds;
         _mainCamera = Camera.main;
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
         _eyeAnimatorController = GetComponent<EyeAnimatorController>();
     }
-                                                
+
     void Update()
     {
         // Xử lý khi người dùng nhấn và thả ngay lập tức (không phải kéo)
@@ -53,15 +53,15 @@ public class PlayerController : MonoBehaviour
             transform.position = _targetPosition;
             if (ThrowPlanetController.instance.CanThrow)
             {
-                 if (_eyeAnimatorController != null)
-         _eyeAnimatorController.SetCloseEye(true);
+                if (_eyeAnimatorController != null)
+                    _eyeAnimatorController.SetCloseEye(true);
                 ThrowPlanetController.instance.ThrowPlanetAtPosition(_targetPosition);
             }
         }
         // Xử lý khi người dùng kéo (trường hợp IsDragging = true)
         else if (_useDirectPosition && Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed && UserInput.IsDragging)
         {
-           
+
 
             Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             Vector3 worldPosition = _mainCamera.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 10f));
@@ -69,8 +69,8 @@ public class PlayerController : MonoBehaviour
             Vector3 newPosition = new Vector3(worldPosition.x, transform.position.y, transform.position.z);
             newPosition.x = Mathf.Clamp(newPosition.x, _leftBounds, _rightBounds);
             transform.position = newPosition;
-             if (_eyeAnimatorController != null)
-         _eyeAnimatorController.SetCloseEye(true);
+            if (_eyeAnimatorController != null)
+                _eyeAnimatorController.SetCloseEye(true);
         }
         // Trường hợp di chuyển bằng delta
         else
@@ -78,8 +78,8 @@ public class PlayerController : MonoBehaviour
             Vector3 newPosition = transform.position + new Vector3(UserInput.MoveInput.x * _moveSpeed * Time.deltaTime, 0f, 0f);
             newPosition.x = Mathf.Clamp(newPosition.x, _leftBounds, _rightBounds);
             transform.position = newPosition;
-          if (_eyeAnimatorController != null)
-         _eyeAnimatorController.SetCloseEye(true);
+            if (_eyeAnimatorController != null)
+                _eyeAnimatorController.SetCloseEye(true);
         }
     }
 
@@ -91,5 +91,5 @@ public class PlayerController : MonoBehaviour
         _leftBounds += planetSize + extraWidth;
         _rightBounds -= planetSize + extraWidth;
     }
-   
+
 }

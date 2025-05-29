@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2315236819886128743}
   - component: {fileID: 3019460952748289099}
   - component: {fileID: 3985155488568007109}
+  - component: {fileID: 5966986787149207075}
+  - component: {fileID: 4507447812435801419}
   m_Layer: 0
   m_Name: buffalo_1
   m_TagString: animal_1
@@ -78,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
-  m_Sprite: {fileID: 3994411631913423393, guid: 67bc40319c39b1d4ab5777af8d8f55bb, type: 3}
+  m_Sprite: {fileID: -66731654325081671, guid: 5348ee1ea598b794a8602ebd6fc19a75, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -138,3 +140,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Index: 1
+--- !u!95 &5966986787149207075
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115943874366062546}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 83282bda2e0564448bd11b1963d852a5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4507447812435801419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115943874366062546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe607e0b81d93c1499816716f08c4fc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

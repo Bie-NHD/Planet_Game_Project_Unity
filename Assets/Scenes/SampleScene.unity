@@ -583,6 +583,7 @@ GameObject:
   - component: {fileID: 252551120}
   - component: {fileID: 252551119}
   - component: {fileID: 252551118}
+  - component: {fileID: 252551121}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -638,6 +639,18 @@ Transform:
   - {fileID: 882953910}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &252551121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252551117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe607e0b81d93c1499816716f08c4fc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &304800144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,8 +1091,8 @@ MonoBehaviour:
   _nextPlanetImage: {fileID: 2074747261}
   _planetSprites:
   - {fileID: 7935234321397735378, guid: 92029cffb39b95943b5453ab643c37f3, type: 3}
-  - {fileID: 3994411631913423393, guid: 67bc40319c39b1d4ab5777af8d8f55bb, type: 3}
-  - {fileID: 6544188894419215680, guid: 2c16f7c29c0d2844db2ddad0a6064682, type: 3}
+  - {fileID: -66731654325081671, guid: 5348ee1ea598b794a8602ebd6fc19a75, type: 3}
+  - {fileID: 1990552566016468726, guid: 91b6081354ec61946aacee2bc22fefe4, type: 3}
   - {fileID: 8678448789981272047, guid: f46a0a9148f93784680253a598b309c7, type: 3}
   - {fileID: 6168083732550661486, guid: f9e3e675a79b7ec4e97689162e9517b3, type: 3}
   - {fileID: 6507982653818034734, guid: c49ae4e1341fba44188dce72a0c29e0d, type: 3}

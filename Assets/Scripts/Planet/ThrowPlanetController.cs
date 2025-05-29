@@ -6,7 +6,7 @@ public class ThrowPlanetController : MonoBehaviour
     public GameObject CurrentPlanet { get; set; }
 
     [SerializeField] private Transform _planetTransform;
-            [SerializeField] private Transform _parentAfterThrow;
+    [SerializeField] private Transform _parentAfterThrow;
     [SerializeField] private float _extraWidth = 0.05f;
 
     private PlayerController _playerController;
@@ -51,14 +51,18 @@ public class ThrowPlanetController : MonoBehaviour
                 Bounds = _circleCollider.bounds;
                 _playerController.ChangeBoundary(_extraWidth);
             }
+
+            var eyeAnimator = planet.GetComponent<EyeAnimatorController>();
+            if (eyeAnimator != null)
+                eyeAnimator.SetCloseEye(false);
         }
     }
-    public void ThrowPlanetAtPosition(Vector3 throwPosition)    
+    public void ThrowPlanetAtPosition(Vector3 throwPosition)
     {
         if (!CanThrow || CurrentPlanet == null) return;
-     
+
         audioManager.PlaySFX(audioManager.thow);
-        
+
         string currentTag = CurrentPlanet.tag;
         Vector3 spawnPosition = _planetTransform.position;
         spawnPosition.x = throwPosition.x;
@@ -95,5 +99,5 @@ public class ThrowPlanetController : MonoBehaviour
         }
     }
 
-    
+
 }
