@@ -6,10 +6,10 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_1
+  m_Name: Animator_Buffalo
   m_Controller: {fileID: 9100000, guid: af11496004288b8488af5162f62a8232, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 2785803388d07e947a9566a67bfacdda, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: d4a51b58a4c89a642a27b04418c492cb, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 515b66c0150669f4394b60465a4edf14, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 1a5b7ca809800324fbd4c2e6e344e418, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 773185045671d5d4bb945d5e31b2b5f6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8ef94d334f6d7364e8ba942ef18da7d7, type: 2}

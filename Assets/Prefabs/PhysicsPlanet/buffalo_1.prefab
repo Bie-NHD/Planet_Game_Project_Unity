@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 2434916075683105867}
   - component: {fileID: 7476401053495185799}
   m_Layer: 8
-  m_Name: buffalo_1
+  m_Name: Buffalo_1
   m_TagString: animal_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -4921014322029309988}
   - component: {fileID: 3450153107293167141}
   m_Layer: 8
-  m_Name: bear_0
+  m_Name: Bear_0
   m_TagString: animal_0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

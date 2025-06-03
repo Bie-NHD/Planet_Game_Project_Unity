@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -3673428057879173130}
   - component: {fileID: -3599233142335087798}
   m_Layer: 8
-  m_Name: elephant_8
+  m_Name: Elephant_8
   m_TagString: animal_8
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

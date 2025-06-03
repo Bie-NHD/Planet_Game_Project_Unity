@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1431306147825920367}
   - component: {fileID: 4824327130088694329}
   m_Layer: 0
-  m_Name: duck_7
+  m_Name: Duck_7
   m_TagString: animal_7
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7042525408119043679}
   - component: {fileID: 7147983132789985890}
   m_Layer: 8
-  m_Name: gorilla_10
+  m_Name: Gorilla_10
   m_TagString: animal_10
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -32,7 +32,7 @@ public class HighScoreManager : MonoBehaviour
         }
         else
         {
-            _highScoreText.text = $"HighScore: {Highscore:0}";
+            _highScoreText.text = $"{Highscore:0}";
         }
     }
 
@@ -40,7 +40,7 @@ public class HighScoreManager : MonoBehaviour
     {
         if (value > Highscore)
         {
-            _highScoreText.text = $"HighScore: {value:0}";
+            _highScoreText.text = $"{value:0}";
             HighscorePrefConfig.SetPref(value);
 
             IsNewHighScore = true;
